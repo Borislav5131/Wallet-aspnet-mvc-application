@@ -1,4 +1,6 @@
-﻿namespace Wallet.Controllers
+﻿using Wallet.Core.Constants;
+
+namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
@@ -15,6 +17,8 @@
 
         public IActionResult Index()
         {
+            ViewData[MessageConstant.SuccessMessage] = "Здравей!";
+
             return View();
         }
 
