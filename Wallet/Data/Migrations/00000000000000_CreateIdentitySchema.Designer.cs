@@ -9,7 +9,7 @@ namespace Wallet.Data.Migrations
     using System;
     using Wallet.Data;
 
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(WalletDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
