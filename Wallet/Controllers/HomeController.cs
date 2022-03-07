@@ -18,6 +18,8 @@ namespace Wallet.Controllers
         public IActionResult Index()
         {
             ViewData[MessageConstant.SuccessMessage] = "Здравей!";
+            ViewData[MessageConstant.ErrorMessage] = "Нещо се обърка";
+            ViewData[MessageConstant.WarningMessage] = "Внимание";
 
             return View();
         }

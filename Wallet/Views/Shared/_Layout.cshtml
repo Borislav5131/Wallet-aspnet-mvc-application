@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css"/>
     <link rel="stylesheet" href="~/css/adminlte.min.css"/>
-    <link ref="stylesheet" href="~/plugins/toastr/toastr.css"/>
+    <link ref="stylesheet" href="~/plugins/toastr/toastr.min.css"/>
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @await RenderSectionAsync("Head", false)
@@ -103,7 +103,7 @@
                 All your actives in one place!
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; 2021-@DateTime.UtcNow.Year <a href="https://adminlte.io"> My Wallet</a>. </strong> All rights reserved.
+            <strong>Copyright &copy; 2021-@DateTime.Now.Year <a href="https://adminlte.io"> My Wallet</a>. </strong> All rights reserved.
         </footer>
     </div>
 <!-- ./wrapper -->

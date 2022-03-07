@@ -4,7 +4,7 @@
 {
     <script>
         $(function() {
-            toastr.error('ViewData[MessageConstant.ErrorMessage].ToString()');
+            toastr.error('@ViewData[MessageConstant.ErrorMessage]?.ToString()');
         });
     </script>
 }
@@ -13,7 +13,7 @@
 {
     <script>
         $(function() {
-            toastr.warning('ViewData[MessageConstant.WarningMessage].ToString()');
+            toastr.warning('@ViewData[MessageConstant.WarningMessage]?.ToString()');
         });
     </script>
 }
@@ -22,7 +22,7 @@
 {
     <script>
         $(function() {
-            toastr.success('ViewData[MessageConstant.SuccessMessage].ToString()');
+            toastr.success('@ViewData[MessageConstant.SuccessMessage]?.ToString()');
         });
     </script>
 }
