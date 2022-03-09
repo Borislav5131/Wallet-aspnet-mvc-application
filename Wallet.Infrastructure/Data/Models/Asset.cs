@@ -7,7 +7,7 @@ namespace Wallet.Data.Models
     public class Asset
     {
         [Key]
-        public string Id { get; init; } = Guid.NewGuid().ToString();
+        public Guid Id { get; init; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(AssetMaxNameLenght)]
@@ -18,9 +18,6 @@ namespace Wallet.Data.Models
         public string Abbreviation { get; set; }
 
         [Required]
-        public string CategoryId { get; set; }
-
-        [ForeignKey(nameof(CategoryId))]
         public Category Category { get; init; }
 
         [Required]

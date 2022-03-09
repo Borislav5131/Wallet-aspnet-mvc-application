@@ -1,4 +1,5 @@
-﻿using Wallet.Core.Constants;
+﻿using Microsoft.AspNetCore.Authorization;
+using Wallet.Core.Constants;
 
 namespace Wallet.Controllers
 {
@@ -6,6 +7,7 @@ namespace Wallet.Controllers
     using System.Diagnostics;
     using Wallet.Models;
 
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

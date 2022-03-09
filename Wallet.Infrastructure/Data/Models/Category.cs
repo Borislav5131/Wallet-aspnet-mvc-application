@@ -6,12 +6,15 @@ namespace Wallet.Data.Models
     public class Category
     {
         [Key]
-        public string Id { get; init; } = Guid.NewGuid().ToString();
+        public Guid Id { get; init; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(GategoryMaxNameLenght)]
         public string Name { get; set; }
 
-        public IEnumerable<Asset> Assets { get; set; } = new List<Asset>();
+        [MaxLength(CategoryDescriptionMaxLenght)]
+        public string? Description { get; set; }
+
+        public List<Asset> Assets { get; set; } = new List<Asset>();
     }
 }

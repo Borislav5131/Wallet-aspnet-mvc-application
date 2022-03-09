@@ -13,5 +13,7 @@
 
         public const int GategoryMaxNameLenght = 30;
         public const int GategoryMinNameLenght = 3;
+        public const int CategoryDescriptionMaxLenght = 500;
+        public const int CategoryDescriptionMinLenght = 500;
     }
 }

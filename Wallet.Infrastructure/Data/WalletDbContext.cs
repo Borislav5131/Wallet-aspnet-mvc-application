@@ -14,12 +14,6 @@ namespace Wallet.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Asset>()
-                .HasOne(c => c.Category)
-                .WithMany(a => a.Assets)
-                .HasForeignKey(c => c.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             base.OnModelCreating(builder);
         }
 
