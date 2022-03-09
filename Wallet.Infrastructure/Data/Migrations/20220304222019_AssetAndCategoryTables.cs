@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Wallet.Data.Migrations
+namespace Wallet.Infrastructure.Data.Migrations
 {
     public partial class AssetAndCategoryTables : Migration
     {

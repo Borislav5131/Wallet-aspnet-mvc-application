@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
-using Wallet.Data;
+using Wallet.Infrastructure.Data;
 using Wallet.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);

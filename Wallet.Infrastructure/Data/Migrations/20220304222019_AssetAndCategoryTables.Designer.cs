@@ -9,7 +9,7 @@ using Wallet.Data;
 
 #nullable disable
 
-namespace Wallet.Data.Migrations
+namespace Wallet.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
     [Migration("20220304222019_AssetAndCategoryTables")]

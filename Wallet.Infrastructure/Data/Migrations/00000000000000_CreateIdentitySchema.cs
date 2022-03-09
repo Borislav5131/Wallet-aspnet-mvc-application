@@ -1,4 +1,4 @@
-﻿namespace Wallet.Data.Migrations
+﻿namespace Wallet.Infrastructure.Data.Migrations
 {
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Migrations;

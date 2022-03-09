@@ -1,6 +1,6 @@
 ﻿using Wallet.Data.Models;
 
-namespace Wallet.Data
+namespace Wallet.Infrastructure.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
