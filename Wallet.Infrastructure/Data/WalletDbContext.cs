@@ -17,8 +17,8 @@ namespace Wallet.Infrastructure.Data
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Asset> Assets { get; init; }
+        public DbSet<Asset> Assets { get; set; }
 
-        public DbSet<Category> Categories { get; init; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

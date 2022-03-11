@@ -1,4 +1,4 @@
-namespace Wallet.Models
+namespace Wallet.Core.ViewModels
 {
     public class ErrorViewModel
     {

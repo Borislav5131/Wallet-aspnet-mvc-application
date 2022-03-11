@@ -12,8 +12,9 @@ namespace Wallet.Data.Models
         [MaxLength(GategoryMaxNameLenght)]
         public string Name { get; set; }
 
+        [Required]
         [MaxLength(CategoryDescriptionMaxLenght)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         public List<Asset> Assets { get; set; } = new List<Asset>();
     }

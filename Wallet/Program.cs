@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
+using Wallet.Core.Contracts;
+using Wallet.Core.Services;
 using Wallet.Infrastructure.Data;
 using Wallet.ModelBinders;
 
@@ -21,6 +23,8 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(1, new DateTimeModelBinderProvider(FormatingConstant.NormalDateFormat));
         options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
     });
+
+builder.Services.AddTransient<ICategoryService,CategoryService>();
 
 var app = builder.Build();
 

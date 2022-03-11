@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Wallet.Core.Constants;
-
-namespace Wallet.Controllers
+﻿namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
-    using Wallet.Models;
+    using Wallet.Core.ViewModels;
 
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,6 +15,11 @@ namespace Wallet.Controllers
 
         public IActionResult Index()
         {
+            //if ()
+            //{
+            //    Redirect("Category//All");
+            //}
+
             return View();
         }
 
