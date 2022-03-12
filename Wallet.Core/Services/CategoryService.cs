@@ -55,5 +55,28 @@ namespace Wallet.Core.Services
                 })
                 .ToList();
         }
+
+        public bool Delete(Guid id)
+        {
+            var category = repo.All<Category>()
+                .FirstOrDefault(c => c.Id == id);
+
+            if (category == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                repo.Remove<Category>(category);
+                repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

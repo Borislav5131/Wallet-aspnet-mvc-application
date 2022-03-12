@@ -48,6 +48,17 @@ namespace Wallet.Controllers
 
         public IActionResult Details() => View();
 
-        public IActionResult Delete() => View();
+        public IActionResult Delete(Guid id)
+        {
+            var deleted = categoryService.Delete(id);
+
+            if (!deleted)
+            {
+                ModelState.AddModelError("","Can't delete category!");
+                return Redirect("/Category/All");
+            }
+
+            return Redirect("/Category/All");
+        }
     }
 }

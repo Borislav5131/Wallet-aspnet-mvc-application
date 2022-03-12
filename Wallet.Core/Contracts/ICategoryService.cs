@@ -6,5 +6,6 @@ namespace Wallet.Core.Contracts
     {
          (bool added, string error) Add(AddCategoryFormModel model);
          List<AllCategoryViewModel> GetAllCategories();
+         bool Delete(Guid id);
     }
 }
