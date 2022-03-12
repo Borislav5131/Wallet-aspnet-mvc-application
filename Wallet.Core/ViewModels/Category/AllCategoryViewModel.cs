@@ -1,6 +1,6 @@
 ﻿namespace Wallet.Core.ViewModels.Category
 {
-    public class AllViewModel
+    public class AllCategoryViewModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Category;
 
@@ -23,13 +22,10 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
+        public IActionResult Add() => View();
 
         [HttpPost]
-        public IActionResult Add(AddFormModel model)
+        public IActionResult Add(AddCategoryFormModel model)
         {
             var (added, error) = categoryService.Add(model);
 
@@ -42,19 +38,10 @@ namespace Wallet.Controllers
         }
 
 
-        public IActionResult Edit()
-        {
-            return View();
-        }
+        public IActionResult Edit() => View();
 
-        public IActionResult Details()
-        {
-            return View();
-        }
+        public IActionResult Details() => View();
 
-        public IActionResult Delete()
-        {
-            return View();
-        }
+        public IActionResult Delete() => View();
     }
 }

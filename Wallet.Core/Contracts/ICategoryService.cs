@@ -4,7 +4,7 @@ namespace Wallet.Core.Contracts
 {
     public interface ICategoryService
     {
-         (bool added, string error) Add(AddFormModel model);
-         List<AllViewModel> GetAllCategories();
+         (bool added, string error) Add(AddCategoryFormModel model);
+         List<AllCategoryViewModel> GetAllCategories();
     }
 }

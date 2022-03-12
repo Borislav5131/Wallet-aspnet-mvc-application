@@ -14,7 +14,7 @@ namespace Wallet.Core.Services
             this.context = context;
         }
 
-        public (bool added, string error) Add(AddFormModel model)
+        public (bool added, string error) Add(AddCategoryFormModel model)
         {
             bool added = false;
             string error = null;
@@ -39,10 +39,10 @@ namespace Wallet.Core.Services
             return (added, error);
         }
 
-        public List<AllViewModel> GetAllCategories()
+        public List<AllCategoryViewModel> GetAllCategories()
         {
             return context.Categories
-                .Select(c => new AllViewModel()
+                .Select(c => new AllCategoryViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
