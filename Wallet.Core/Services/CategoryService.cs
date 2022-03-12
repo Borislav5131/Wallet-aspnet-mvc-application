@@ -1,17 +1,17 @@
-﻿using Wallet.Core.Contracts;
+﻿using Wallet.Core.Constants;
+using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Category;
 using Wallet.Data.Models;
-using Wallet.Infrastructure.Data;
 
 namespace Wallet.Core.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly WalletDbContext context;
+        private readonly IRepository repo;
 
-        public CategoryService(WalletDbContext context)
+        public CategoryService(IRepository repo)
         {
-            this.context = context;
+            this.repo = repo;
         }
 
         public (bool added, string error) Add(AddCategoryFormModel model)
@@ -27,8 +27,8 @@ namespace Wallet.Core.Services
 
             try
             {
-                context.Categories.Add(c);
-                context.SaveChanges();
+                repo.Add<Category>(c);
+                repo.SaveChanges();
                 added = true;
             }
             catch (Exception)
@@ -41,7 +41,7 @@ namespace Wallet.Core.Services
 
         public List<AllCategoryViewModel> GetAllCategories()
         {
-            return context.Categories
+            return repo.All<Category>()
                 .Select(c => new AllCategoryViewModel()
                 {
                     Id = c.Id,

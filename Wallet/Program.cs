@@ -25,6 +25,7 @@ builder.Services.AddControllersWithViews()
     });
 
 builder.Services.AddTransient<ICategoryService,CategoryService>();
+builder.Services.AddTransient<IRepository, Repository>();
 
 var app = builder.Build();
 
