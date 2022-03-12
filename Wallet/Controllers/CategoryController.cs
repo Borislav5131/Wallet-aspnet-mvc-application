@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
+using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Category;
 
 namespace Wallet.Controllers
@@ -54,8 +55,7 @@ namespace Wallet.Controllers
 
             if (!deleted)
             {
-                ModelState.AddModelError("","Can't delete category!");
-                return Redirect("/Category/All");
+                return View("Error", new ErrorViewModel(){ErrorMessage = "Category can't be deleted!"});
             }
 
             return Redirect("/Category/All");

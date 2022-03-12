@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Wallet.Core.Constants
+﻿namespace Wallet.Core.Constants
 {
     public interface IRepository
     {
