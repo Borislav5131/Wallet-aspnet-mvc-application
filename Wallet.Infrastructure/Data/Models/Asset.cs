@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Wallet.Data.DataConstants;
+using static Wallet.Infrastructure.Data.DataConstants;
 
 namespace Wallet.Data.Models
 {

@@ -19,6 +19,11 @@ namespace Wallet.Core.Services
             bool added = false;
             string error = null;
 
+            if (repo.All<Category>().Any(c=>c.Name == model.Name))
+            {
+                return (added,error = "Category exist!");
+            }
+
             Category c = new Category()
             {
                 Name = model.Name,
@@ -33,7 +38,7 @@ namespace Wallet.Core.Services
             }
             catch (Exception)
             {
-                error = "Cound not save category!";
+                error = "Cound not add category!";
             }
             
             return (added, error);

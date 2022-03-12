@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Wallet.Data.DataConstants;
+using static Wallet.Infrastructure.Data.DataConstants;
 
 namespace Wallet.Data.Models
 {
@@ -9,7 +9,7 @@ namespace Wallet.Data.Models
         public Guid Id { get; init; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(GategoryMaxNameLenght)]
+        [MaxLength(CategoryMaxNameLenght)]
         public string Name { get; set; }
 
         [Required]

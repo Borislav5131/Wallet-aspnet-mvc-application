@@ -27,14 +27,20 @@ namespace Wallet.Controllers
         [HttpPost]
         public IActionResult Add(AddCategoryFormModel model)
         {
-            var (added, error) = categoryService.Add(model);
-
-            if (added)
+            if (!ModelState.IsValid)
             {
-                return Redirect("/Category/All");
+                return View();
             }
 
-            return View();
+            var (added, error) = categoryService.Add(model);
+
+            if (!added)
+            {
+                ModelState.AddModelError("",error);
+                return View();
+            }
+
+            return Redirect("/Category/All");
         }
 
 

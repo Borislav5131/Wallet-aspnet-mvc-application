@@ -1,4 +1,4 @@
-﻿namespace Wallet.Data
+﻿namespace Wallet.Infrastructure.Data
 {
     public class DataConstants
     {
@@ -11,8 +11,8 @@
         public const double AssetMaxAmount = 100000;
         public const double AssetMinAmount = 0;
 
-        public const int GategoryMaxNameLenght = 30;
-        public const int GategoryMinNameLenght = 3;
+        public const int CategoryMaxNameLenght = 30;
+        public const int CategoryMinNameLenght = 3;
         public const int CategoryDescriptionMaxLenght = 500;
         public const int CategoryDescriptionMinLenght = 0;
     }
