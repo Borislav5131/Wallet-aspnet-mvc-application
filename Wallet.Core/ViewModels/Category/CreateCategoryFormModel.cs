@@ -3,7 +3,7 @@ using static Wallet.Infrastructure.Data.DataConstants;
 
 namespace Wallet.Core.ViewModels.Category
 {
-    public class AddCategoryFormModel
+    public class CreateCategoryFormModel
     {
         [Required]
         [MaxLength(CategoryMaxNameLenght, ErrorMessage = "Name must be max 30 characters!"), MinLength(CategoryMinNameLenght, ErrorMessage = "Name must be min 3 characters!")]

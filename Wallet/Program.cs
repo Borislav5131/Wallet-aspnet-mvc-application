@@ -8,7 +8,7 @@ using Wallet.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Create services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<WalletDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -26,6 +26,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddTransient<ICategoryService,CategoryService>();
 builder.Services.AddTransient<IRepository, Repository>();
+builder.Services.AddTransient<IAssetService, AssetService>();
 
 var app = builder.Build();
 

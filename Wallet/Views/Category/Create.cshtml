@@ -1,14 +1,14 @@
-﻿@model Wallet.Core.ViewModels.Category.AddCategoryFormModel
+﻿@model Wallet.Core.ViewModels.Category.CreateCategoryFormModel
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Create";
 }
 
 <div class="row">
     <div class="offset-md-2 col-md-6 col-sm-12">
-        <h4 class="text-center">Add category</h4>
+        <h4 class="text-center">Create category</h4>
 
-        <form asp-action="Add">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>

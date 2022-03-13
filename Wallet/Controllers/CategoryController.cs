@@ -23,17 +23,17 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add() => View();
+        public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Add(AddCategoryFormModel model)
+        public IActionResult Create(CreateCategoryFormModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var (added, error) = categoryService.Add(model);
+            var (added, error) = categoryService.Create(model);
 
             if (!added)
             {
@@ -49,9 +49,9 @@ namespace Wallet.Controllers
 
         public IActionResult Details() => View();
 
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid categoryId)
         {
-            var deleted = categoryService.Delete(id);
+            var deleted = categoryService.Delete(categoryId);
 
             if (!deleted)
             {

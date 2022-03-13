@@ -25,8 +25,4 @@
     <ProjectReference Include="..\Wallet.Core\Wallet.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Asset\" />
-  </ItemGroup>
-
 </Project>

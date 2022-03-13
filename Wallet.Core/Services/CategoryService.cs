@@ -14,7 +14,7 @@ namespace Wallet.Core.Services
             this.repo = repo;
         }
 
-        public (bool added, string error) Add(AddCategoryFormModel model)
+        public (bool added, string error) Create(CreateCategoryFormModel model)
         {
             bool added = false;
             string error = null;
@@ -49,17 +49,17 @@ namespace Wallet.Core.Services
             return repo.All<Category>()
                 .Select(c => new AllCategoryViewModel()
                 {
-                    Id = c.Id,
+                    CategoryId = c.Id,
                     Name = c.Name,
                     Description = c.Description,
                 })
                 .ToList();
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(Guid categoryId)
         {
             var category = repo.All<Category>()
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefault(c => c.Id == categoryId);
 
             if (category == null)
             {
@@ -77,6 +77,19 @@ namespace Wallet.Core.Services
             }
 
             return true;
+        }
+
+        public string GetCategoryName(Guid categoryId)
+        {
+            var category = repo.All<Category>()
+                .FirstOrDefault(c => c.Id == categoryId);
+
+            if (category == null)
+            {
+                return null;
+            }
+
+            return category.Name;
         }
     }
 }
