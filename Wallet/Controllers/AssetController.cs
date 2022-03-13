@@ -55,5 +55,18 @@ namespace Wallet.Controllers
 
             return Redirect("/Category/All");
         }
+
+        [HttpGet]
+        public IActionResult Delete(Guid assetId)
+        {
+            var deleted = assetService.Delete(assetId);
+
+            if (!deleted)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Asset can't be deleted!" });
+            }
+
+            return Redirect("/Category/All");
+        }
     }
 }

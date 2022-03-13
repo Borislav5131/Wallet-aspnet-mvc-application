@@ -26,12 +26,19 @@ namespace Wallet.Core.Services
                 return (added, error = "Asset exist!");
             }
 
-            var category = categoryService.GetCategory(model.CategoryName);
+            var category = repo.All<Category>()
+                                .FirstOrDefault(c => c.Name == model.CategoryName);
+
+            if (category == null)
+            {
+                return (added, error = "Category is not valid!");
+            }
 
             Asset a = new Asset()
             {
                 Name = model.Name,
                 Abbreviation = model.Abbreviation,
+                CategoryId = category.Id,
                 Category = category,
                 Value = model.Value,
             };
@@ -50,6 +57,32 @@ namespace Wallet.Core.Services
             }
 
             return (added, error);
+        }
+
+        public bool Delete(Guid assetId)
+        {
+            var asset = repo.All<Asset>()
+                .FirstOrDefault(a => a.Id == assetId);
+            var category = repo.All<Category>()
+                .FirstOrDefault(c=>c.Id == asset.CategoryId);
+
+            if (asset == null || category == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                category.Assets.Remove(asset);
+                repo.Remove<Asset>(asset);
+                repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)

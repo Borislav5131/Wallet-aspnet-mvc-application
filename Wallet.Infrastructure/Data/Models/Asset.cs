@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Wallet.Infrastructure.Data.DataConstants;
 
 namespace Wallet.Infrastructure.Data.Models
@@ -17,6 +18,9 @@ namespace Wallet.Infrastructure.Data.Models
         public string Abbreviation { get; set; }
 
         [Required]
+        public Guid CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
 
         [Required]

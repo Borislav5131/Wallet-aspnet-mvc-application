@@ -68,6 +68,7 @@ namespace Wallet.Core.Services
 
             try
             {
+                category.Assets.Clear();
                 repo.Remove<Category>(category);
                 repo.SaveChanges();
             }
@@ -91,9 +92,5 @@ namespace Wallet.Core.Services
 
             return category.Name;
         }
-
-        public Category GetCategory(string modelCategoryName)
-            => repo.All<Category>()
-                .FirstOrDefault(c => c.Name == modelCategoryName);
     }
 }
