@@ -1,4 +1,5 @@
 ﻿using Wallet.Core.ViewModels.Category;
+using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Contracts
 {
@@ -8,5 +9,6 @@ namespace Wallet.Core.Contracts
          List<AllCategoryViewModel> GetAllCategories();
          bool Delete(Guid categoryId);
          string GetCategoryName(Guid categoryId);
+         Category GetCategory(string modelCategoryName);
     }
 }

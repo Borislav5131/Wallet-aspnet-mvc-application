@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Wallet.Infrastructure.Data.DataConstants;
 
-namespace Wallet.Data.Models
+namespace Wallet.Infrastructure.Data.Models
 {
     public class Category
     {

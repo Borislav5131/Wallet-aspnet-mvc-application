@@ -1,5 +1,6 @@
 ﻿using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
+using Wallet.Core.ViewModels.Asset;
 
 namespace Wallet.Controllers
 {
@@ -16,6 +17,7 @@ namespace Wallet.Controllers
             this.categoryService = categoryService;
         }
 
+        [HttpGet]
         public IActionResult All(Guid categoryId)
         {
             var assets = assetService.GetAssetsInCategory(categoryId);
@@ -30,6 +32,28 @@ namespace Wallet.Controllers
 
             
             return View(assets);
+        }
+
+        [HttpGet]
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        public IActionResult Create(CreateAssetFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var (added, error) = assetService.Create(model);
+
+            if (!added)
+            {
+                ModelState.AddModelError("", error);
+                return View();
+            }
+
+            return Redirect("/Category/All");
         }
     }
 }

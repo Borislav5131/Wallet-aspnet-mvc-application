@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static Wallet.Infrastructure.Data.DataConstants;
 
-namespace Wallet.Data.Models
+namespace Wallet.Infrastructure.Data.Models
 {
     public class Asset
     {
@@ -18,13 +17,12 @@ namespace Wallet.Data.Models
         public string Abbreviation { get; set; }
 
         [Required]
-        public Category Category { get; init; }
+        public Category Category { get; set; }
 
         [Required]
         [Range(AssetMinValue,AssetMaxValue)]
         public decimal Value { get; set; }
         
-        [Required]
         [Range(AssetMinAmount,AssetMaxAmount)]
         public decimal Amount { get; set; }
 

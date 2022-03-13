@@ -1,4 +1,4 @@
-﻿using Wallet.Data.Models;
+﻿using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Infrastructure.Data
 {

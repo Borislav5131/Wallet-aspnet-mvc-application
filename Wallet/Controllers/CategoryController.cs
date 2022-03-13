@@ -49,6 +49,7 @@ namespace Wallet.Controllers
 
         public IActionResult Details() => View();
 
+        [HttpGet]
         public IActionResult Delete(Guid categoryId)
         {
             var deleted = categoryService.Delete(categoryId);

@@ -1,7 +1,7 @@
 ﻿using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Category;
-using Wallet.Data.Models;
+using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Services
 {
@@ -91,5 +91,9 @@ namespace Wallet.Core.Services
 
             return category.Name;
         }
+
+        public Category GetCategory(string modelCategoryName)
+            => repo.All<Category>()
+                .FirstOrDefault(c => c.Name == modelCategoryName);
     }
 }
