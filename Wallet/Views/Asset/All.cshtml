@@ -13,7 +13,10 @@
     {
         <div class="col-md-3">
             <div class="card border-success mb-4" style="max-width: 18rem">
-                <div class="card-header bg-transparent border-success">@item.Abbreviation</div>
+                <div class="card-header bg-transparent border-success text-dark">
+                    <img src="@item.Logo" class="w-25 h-25"/>
+                     @item.Abbreviation
+                </div>
                 <div class="card-body text-success">
                     <h5 class="card-title">@item.Name</h5>
                     <h5 class="card-text">Price: $@item.Price</h5>

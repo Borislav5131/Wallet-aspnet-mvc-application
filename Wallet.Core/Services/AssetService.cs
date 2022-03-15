@@ -14,7 +14,7 @@ namespace Wallet.Core.Services
             this.repo = repo;
         }
 
-        public (bool added, string error) Create(CreateAssetFormModel model)
+        public (bool added, string error) Create(CreateAssetFormModel model,byte[] logo)
         {
             bool added = false;
             string error = null;
@@ -22,6 +22,11 @@ namespace Wallet.Core.Services
             if (repo.All<Asset>().Any(c => c.Name == model.Name))
             {
                 return (added, error = "Asset exist!");
+            }
+
+            if (logo.Length > 2 * 1024 * 1024)
+            {
+                return (added, error = "Logo must be max 2 MB");
             }
 
             var category = repo.All<Category>()
@@ -39,6 +44,7 @@ namespace Wallet.Core.Services
                 CategoryId = category.Id,
                 Category = category,
                 Value = model.Value,
+                Logo = logo
             };
 
             category.Assets.Add(a);
@@ -93,7 +99,8 @@ namespace Wallet.Core.Services
                     Name = a.Name,
                     Abbreviation = a.Abbreviation,
                     Price = a.Value,
-                })
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+        })
                 .ToList(); ;
         }
     }

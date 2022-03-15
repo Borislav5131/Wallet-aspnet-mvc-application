@@ -30,6 +30,8 @@ namespace Wallet.Infrastructure.Data.Models
         [Range(AssetMinAmount,AssetMaxAmount)]
         public decimal Amount { get; set; }
 
-        //public FileStream Logo { get; set; }
+        [Required]
+        [MaxLength(AssetMaxLogoSize)]
+        public byte[] Logo { get; set; }
     }
 }

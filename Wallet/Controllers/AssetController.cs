@@ -43,14 +43,15 @@ namespace Wallet.Controllers
         });
 
         [HttpPost]
-        public IActionResult Create(CreateAssetFormModel model)
+        public IActionResult Create(CreateAssetFormModel model,IFormFile logo)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var (added, error) = assetService.Create(model);
+            var convertedLogo = ConvertLogoToBytes(logo);
+            var (added, error) = assetService.Create(model,convertedLogo);
 
             if (!added)
             {
@@ -58,7 +59,7 @@ namespace Wallet.Controllers
                 return View();
             }
 
-            return Redirect("/Category/All");
+            return Redirect($"/Asset/All?categoryId={model.CategoryId}");
         }
 
         [HttpGet]
@@ -72,6 +73,15 @@ namespace Wallet.Controllers
             }
 
             return Redirect("/Category/All");
+        }
+
+
+        private byte[] ConvertLogoToBytes(IFormFile logo)
+        {
+            var ms = new MemoryStream();
+            logo.CopyTo(ms);
+
+            return ms.ToArray();
         }
     }
 }
