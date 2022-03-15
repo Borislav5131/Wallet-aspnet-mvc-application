@@ -1,4 +1,6 @@
-﻿namespace Wallet.Core.ViewModels.Asset
+﻿using System.Dynamic;
+
+namespace Wallet.Core.ViewModels.Asset
 {
     public class AllAssetViewModel
     {

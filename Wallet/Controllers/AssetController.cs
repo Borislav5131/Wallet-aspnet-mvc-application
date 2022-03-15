@@ -23,6 +23,7 @@ namespace Wallet.Controllers
             var assets = assetService.GetAssetsInCategory(categoryId);
 
             ViewData["CategoryName"] = categoryService.GetCategoryName(categoryId);
+            ViewData["CategoryId"] = categoryId;
 
             if (assets == null ||
                 ViewData["CategoryName"] == null)
@@ -35,7 +36,11 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create(Guid categoryId) => View( new CreateAssetFormModel()
+        {
+            CategoryId = categoryId,
+            CategoryName = categoryService.GetCategoryName(categoryId)
+        });
 
         [HttpPost]
         public IActionResult Create(CreateAssetFormModel model)

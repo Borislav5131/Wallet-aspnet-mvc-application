@@ -2,41 +2,28 @@
 
 <p>
     <h1 class="text-center">Assets in @ViewData["CategoryName"]</h1>
-    <a class="text-center" asp-action="Create">Create Asset</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Abbreviation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abbreviation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Buy", "Buy", new {  assetId=item.AssetId  }) |
-                @Html.ActionLink("Details", "Details", new { assetId=item.AssetId }) |
-                @Html.ActionLink("Delete", "Delete", new { assetId=item.AssetId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="text-center">
+    <a role="button" class="btn btn-primary" asp-action="Create" asp-route-categoryId="@ViewData["CategoryId"]">Create Asset</a>
+</div>
+<br/>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card border-success mb-4" style="max-width: 18rem">
+                <div class="card-header bg-transparent border-success">@item.Abbreviation</div>
+                <div class="card-body text-success">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h5 class="card-text">Price: $@item.Price</h5>
+                </div>
+                <div class="card-footer bg-transparent border-success">
+                    <a role="button" class="btn btn-outline-success" asp-action="Buy" asp-route-assetId="@item.AssetId">Buy</a>
+                    <a role="button" class="btn btn-outline-info" asp-action="Details" asp-route-assetId="@item.AssetId">Details</a>
+                    <a role="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-assetId="@item.AssetId">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

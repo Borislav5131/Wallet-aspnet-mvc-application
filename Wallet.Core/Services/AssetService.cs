@@ -8,12 +8,10 @@ namespace Wallet.Core.Services
     public class AssetService : IAssetService
     {
         private readonly IRepository repo;
-        private readonly ICategoryService categoryService;
 
-        public AssetService(IRepository repo, ICategoryService categoryService)
+        public AssetService(IRepository repo)
         {
             this.repo = repo;
-            this.categoryService = categoryService;
         }
 
         public (bool added, string error) Create(CreateAssetFormModel model)
@@ -27,7 +25,7 @@ namespace Wallet.Core.Services
             }
 
             var category = repo.All<Category>()
-                                .FirstOrDefault(c => c.Name == model.CategoryName);
+                                .FirstOrDefault(c => c.Id == model.CategoryId);
 
             if (category == null)
             {
