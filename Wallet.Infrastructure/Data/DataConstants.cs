@@ -2,6 +2,9 @@
 {
     public class DataConstants
     {
+        public const int UserFullNameMaxLenght = 50;
+        public const int UserFullNameMinLenght = 5;
+
         public const int AssetMaxNameLenght = 30;
         public const int AssetMinNameLenght = 3;
         public const int AssetMaxAbbreviationLenght = 10;

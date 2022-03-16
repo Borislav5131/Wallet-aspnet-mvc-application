@@ -1,10 +1,12 @@
 using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.Services;
 using Wallet.Infrastructure.Data;
+using Wallet.Infrastructure.Data.Models;
 using Wallet.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +17,22 @@ builder.Services.AddDbContext<WalletDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+    })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<WalletDbContext>();
-builder.Services.AddControllersWithViews()
+
+builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    })
     .AddMvcOptions(options =>
     {
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
@@ -25,7 +40,7 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
     });
 
-builder.Services.AddTransient<ICategoryService,CategoryService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAssetService, AssetService>();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });

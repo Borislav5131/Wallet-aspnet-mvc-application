@@ -5,7 +5,7 @@ namespace Wallet.Infrastructure.Data
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class WalletDbContext : IdentityDbContext
+    public class WalletDbContext : IdentityDbContext<User>
     {
         public WalletDbContext(DbContextOptions<WalletDbContext> options)
             : base(options)
