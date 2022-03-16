@@ -7,11 +7,11 @@ namespace Wallet.Core.Services
 {
     public class AssetService : IAssetService
     {
-        private readonly IRepository repo;
+        private readonly IRepository _repo;
 
         public AssetService(IRepository repo)
         {
-            this.repo = repo;
+            this._repo = repo;
         }
 
         public (bool added, string error) Create(CreateAssetFormModel model,byte[] logo)
@@ -19,7 +19,7 @@ namespace Wallet.Core.Services
             bool added = false;
             string error = null;
 
-            if (repo.All<Asset>().Any(c => c.Name == model.Name))
+            if (_repo.All<Asset>().Any(c => c.Name == model.Name))
             {
                 return (added, error = "Asset exist!");
             }
@@ -29,8 +29,7 @@ namespace Wallet.Core.Services
                 return (added, error = "Logo must be max 2 MB");
             }
 
-            var category = repo.All<Category>()
-                                .FirstOrDefault(c => c.Id == model.CategoryId);
+            var category = _repo.All<Category>().FirstOrDefault(c => c.Name == model.CategoryName);
 
             if (category == null)
             {
@@ -51,8 +50,8 @@ namespace Wallet.Core.Services
 
             try
             {
-                repo.Add<Asset>(a);
-                repo.SaveChanges();
+                _repo.Add<Asset>(a);
+                _repo.SaveChanges();
                 added = true;
             }
             catch (Exception)
@@ -65,9 +64,9 @@ namespace Wallet.Core.Services
 
         public bool Delete(Guid assetId)
         {
-            var asset = repo.All<Asset>()
+            var asset = _repo.All<Asset>()
                 .FirstOrDefault(a => a.Id == assetId);
-            var category = repo.All<Category>()
+            var category = _repo.All<Category>()
                 .FirstOrDefault(c=>c.Id == asset.CategoryId);
 
             if (asset == null || category == null)
@@ -78,8 +77,8 @@ namespace Wallet.Core.Services
             try
             {
                 category.Assets.Remove(asset);
-                repo.Remove<Asset>(asset);
-                repo.SaveChanges();
+                _repo.Remove<Asset>(asset);
+                _repo.SaveChanges();
             }
             catch (Exception)
             {
@@ -91,7 +90,7 @@ namespace Wallet.Core.Services
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
         {
-            return repo.All<Asset>()
+            return _repo.All<Asset>()
                 .Where(a=>a.Category.Id == categoryId)
                 .Select(a => new AllAssetViewModel()
                 {

@@ -1,4 +1,6 @@
-﻿using Wallet.Core.Contracts;
+﻿using System.Dynamic;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Asset;
 
@@ -8,21 +10,23 @@ namespace Wallet.Controllers
 
     public class AssetController : Controller
     {
-        private readonly IAssetService assetService;
-        private readonly ICategoryService categoryService;
+        private readonly IAssetService _assetService;
+        private readonly ICategoryService _categoryService;
+        private readonly INotyfService _notyf;
 
-        public AssetController(IAssetService assetService, ICategoryService categoryService)
+        public AssetController(IAssetService assetService, ICategoryService categoryService, INotyfService notyf)
         {
-            this.assetService = assetService;
-            this.categoryService = categoryService;
+            this._assetService = assetService;
+            this._categoryService = categoryService;
+            _notyf = notyf;
         }
 
         [HttpGet]
         public IActionResult All(Guid categoryId)
         {
-            var assets = assetService.GetAssetsInCategory(categoryId);
+            var assets = _assetService.GetAssetsInCategory(categoryId);
 
-            ViewData["CategoryName"] = categoryService.GetCategoryName(categoryId);
+            ViewData["CategoryName"] = _categoryService.GetCategoryName(categoryId);
             ViewData["CategoryId"] = categoryId;
 
             if (assets == null ||
@@ -36,42 +40,55 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(Guid categoryId) => View( new CreateAssetFormModel()
+        public IActionResult Create(Guid categoryId)
         {
-            CategoryId = categoryId,
-            CategoryName = categoryService.GetCategoryName(categoryId)
-        });
+            var model = new CreateAssetFormModel()
+            {
+                CategoryId = categoryId,
+                CategoryName = _categoryService.GetCategoryName(categoryId)
+            };
+
+            return View(model);
+        }
 
         [HttpPost]
-        public IActionResult Create(CreateAssetFormModel model,IFormFile logo)
+        public IActionResult Create(CreateAssetFormModel model, IFormFile logo)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
+            }
+
+            if (logo == null)
+            {
+                _notyf.Error("Logo is necessary");
+                return View(model);
             }
 
             var convertedLogo = ConvertLogoToBytes(logo);
-            var (added, error) = assetService.Create(model,convertedLogo);
+            var (added, error) = _assetService.Create(model,convertedLogo);
 
             if (!added)
             {
                 ModelState.AddModelError("", error);
-                return View();
+                return View(model);
             }
 
+            _notyf.Success("Successfully added new asset.");
             return Redirect($"/Asset/All?categoryId={model.CategoryId}");
         }
 
         [HttpGet]
         public IActionResult Delete(Guid assetId)
         {
-            var deleted = assetService.Delete(assetId);
+            var deleted = _assetService.Delete(assetId);
 
             if (!deleted)
             {
                 return View("Error", new ErrorViewModel() { ErrorMessage = "Asset can't be deleted!" });
             }
 
+            _notyf.Success("Successfully delete asset.");
             return Redirect("/Category/All");
         }
 

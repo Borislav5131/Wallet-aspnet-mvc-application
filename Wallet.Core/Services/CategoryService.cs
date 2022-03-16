@@ -7,11 +7,11 @@ namespace Wallet.Core.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IRepository repo;
+        private readonly IRepository _repo;
 
         public CategoryService(IRepository repo)
         {
-            this.repo = repo;
+            this._repo = repo;
         }
 
         public (bool added, string error) Create(CreateCategoryFormModel model)
@@ -19,7 +19,7 @@ namespace Wallet.Core.Services
             bool added = false;
             string error = null;
 
-            if (repo.All<Category>().Any(c=>c.Name == model.Name))
+            if (_repo.All<Category>().Any(c=>c.Name == model.Name))
             {
                 return (added,error = "Category exist!");
             }
@@ -32,8 +32,8 @@ namespace Wallet.Core.Services
 
             try
             {
-                repo.Add<Category>(c);
-                repo.SaveChanges();
+                _repo.Add<Category>(c);
+                _repo.SaveChanges();
                 added = true;
             }
             catch (Exception)
@@ -46,7 +46,7 @@ namespace Wallet.Core.Services
 
         public List<AllCategoryViewModel> GetAllCategories()
         {
-            return repo.All<Category>()
+            return _repo.All<Category>()
                 .Select(c => new AllCategoryViewModel()
                 {
                     CategoryId = c.Id,
@@ -58,7 +58,7 @@ namespace Wallet.Core.Services
 
         public bool Delete(Guid categoryId)
         {
-            var category = repo.All<Category>()
+            var category = _repo.All<Category>()
                 .FirstOrDefault(c => c.Id == categoryId);
 
             if (category == null)
@@ -69,8 +69,8 @@ namespace Wallet.Core.Services
             try
             {
                 category.Assets.Clear();
-                repo.Remove<Category>(category);
-                repo.SaveChanges();
+                _repo.Remove<Category>(category);
+                _repo.SaveChanges();
             }
             catch (Exception)
             {
@@ -82,7 +82,7 @@ namespace Wallet.Core.Services
 
         public string GetCategoryName(Guid categoryId)
         {
-            var category = repo.All<Category>()
+            var category = _repo.All<Category>()
                 .FirstOrDefault(c => c.Id == categoryId);
 
             if (category == null)

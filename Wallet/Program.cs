@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
@@ -27,6 +28,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddTransient<ICategoryService,CategoryService>();
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAssetService, AssetService>();
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 var app = builder.Build();
 

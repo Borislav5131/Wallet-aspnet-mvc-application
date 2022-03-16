@@ -13,11 +13,10 @@ namespace Wallet.Core.ViewModels.Asset
         [MaxLength(AssetMaxAbbreviationLenght, ErrorMessage = "Abbreviation must be max 30 characters!"), MinLength(AssetMinAbbreviationLenght, ErrorMessage = "Abbreviation must be min 3 characters!")]
         public string Abbreviation { get; set; }
 
-        [Required]
-        [Display(Name = "Category")]
         public Guid CategoryId { get; set; }
 
-        public string? CategoryName { get; set; }
+        [Required]
+        public string CategoryName { get; set; }
 
         [Required]
         [Range(AssetMinValue, AssetMaxValue,ErrorMessage = "Value must be betweeen 0 and 100000")]

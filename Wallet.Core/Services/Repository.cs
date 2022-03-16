@@ -6,17 +6,17 @@ namespace Wallet.Core.Contracts
 {
     public class Repository : IRepository
     {
-        private readonly DbContext dbContext;
+        private readonly DbContext _dbContext;
 
         public Repository(WalletDbContext context)
         {
-            dbContext = context;
+            _dbContext = context;
         }
 
         private DbSet<T> DbSet<T>() 
             where T : class
         {
-            return dbContext.Set<T>();
+            return _dbContext.Set<T>();
         }
 
         public void Add<T>(T entity)
@@ -38,7 +38,7 @@ namespace Wallet.Core.Contracts
 
         public int SaveChanges()
         {
-            return dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
     }
 }

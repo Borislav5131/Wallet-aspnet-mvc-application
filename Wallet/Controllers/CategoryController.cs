@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Category;
@@ -7,17 +8,19 @@ namespace Wallet.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryService categoryService;
+        private readonly ICategoryService _categoryService;
+        private readonly INotyfService _notyf;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, INotyfService notyf)
         {
-            this.categoryService = categoryService;
+            this._categoryService = categoryService;
+            _notyf = notyf;
         }
 
         [HttpGet]
         public IActionResult All()
         {
-            var categories = categoryService.GetAllCategories();
+            var categories = _categoryService.GetAllCategories();
 
             return View(categories);
         }
@@ -33,7 +36,7 @@ namespace Wallet.Controllers
                 return View();
             }
 
-            var (added, error) = categoryService.Create(model);
+            var (added, error) = _categoryService.Create(model);
 
             if (!added)
             {
@@ -41,6 +44,7 @@ namespace Wallet.Controllers
                 return View();
             }
 
+            _notyf.Success("Successfully added new category.");
             return Redirect("/Category/All");
         }
 
@@ -52,13 +56,14 @@ namespace Wallet.Controllers
         [HttpGet]
         public IActionResult Delete(Guid categoryId)
         {
-            var deleted = categoryService.Delete(categoryId);
+            var deleted = _categoryService.Delete(categoryId);
 
             if (!deleted)
             {
                 return View("Error", new ErrorViewModel(){ErrorMessage = "Category can't be deleted!"});
             }
 
+            _notyf.Success("Successfully delete category.");
             return Redirect("/Category/All");
         }
     }
