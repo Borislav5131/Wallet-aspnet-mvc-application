@@ -6,8 +6,6 @@ namespace Wallet.Infrastructure.Data.Models
 {
     public class User : IdentityUser
     {
-        [Required]
-        [MaxLength(UserFullNameMaxLenght)]
-        public string FullName { get; set;}
+        
     }
 }
