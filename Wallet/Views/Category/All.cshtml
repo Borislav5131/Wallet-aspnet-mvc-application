@@ -4,46 +4,29 @@
     ViewData["Title"] = "All";
 }
 
-<div class="offset-md-1 col-md-10 col-sm-12">
-    <p>
-        <h1 class="text-center">Categories</h1>
-    </p>
+<p>
+    <h1 class="text-center">Categories</h1>
+</p>
 
-    <div class="text-center">
-        <a role="button" class="btn btn-primary" asp-action="Create">Create Category</a>
-    </div>
-    
-    <br/>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Assets", "All", "Asset", new { categoryId = item.CategoryId }) |
-                        @Html.ActionLink("Edit", "Edit", "Category", new { categoryId = item.CategoryId }) |
-                        @Html.ActionLink("Delete", "Delete", "Category", new { categoryId = item.CategoryId })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="text-center">
+    <a role="button" class="btn btn-primary" asp-action="Create">Create Category</a>
+</div>
+<br />
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card border-info mb-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a role="button" class="btn btn-outline-success m-1" asp-controller="Asset" asp-action="All" asp-route-categoryId="@item.CategoryId">Assets</a>
+                    <a role="button" class="btn btn-outline-info m-1" asp-action="Edit" asp-route-categoryId="@item.CategoryId">Edit</a>
+                    <a role="button" class="btn btn-outline-danger m-1" asp-action="Delete" asp-route-categoryId="@item.CategoryId">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

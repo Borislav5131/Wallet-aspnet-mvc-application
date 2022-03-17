@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\favicon\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
