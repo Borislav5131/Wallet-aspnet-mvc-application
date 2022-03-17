@@ -45,6 +45,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAssetService, AssetService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 var app = builder.Build();

@@ -2,8 +2,8 @@
 {
     public class DataConstants
     {
-        public const int UserFullNameMaxLenght = 50;
-        public const int UserFullNameMinLenght = 5;
+        public const double UserBalanceMaxValue = double.MaxValue;
+        public const double UserBalanceMinValue = 0;
 
         public const int AssetMaxNameLenght = 30;
         public const int AssetMinNameLenght = 3;
@@ -19,5 +19,8 @@
         public const int CategoryMinNameLenght = 3;
         public const int CategoryDescriptionMaxLenght = 500;
         public const int CategoryDescriptionMinLenght = 0;
+
+        public const double WalletTotalAmountMaxValue = double.MaxValue;
+        public const double WalletTotalAmountMinValue = 0;
     }
 }

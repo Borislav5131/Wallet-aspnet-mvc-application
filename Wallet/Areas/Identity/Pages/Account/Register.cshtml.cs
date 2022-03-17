@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Wallet.Core.Contracts;
 using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Areas.Identity.Pages.Account
@@ -32,6 +33,7 @@ namespace Wallet.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly INotyfService _notyf;
+        private readonly IUserService _userService;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -39,7 +41,8 @@ namespace Wallet.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, 
-            INotyfService notyf)
+            INotyfService notyf,
+            IUserService userService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,6 +51,7 @@ namespace Wallet.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _notyf = notyf;
+            _userService = userService;
         }
 
         /// <summary>
@@ -131,6 +135,8 @@ namespace Wallet.Areas.Identity.Pages.Account
                 {
                     _notyf.Success("Successfully register!");
                     _logger.LogInformation("User created a new account with password.");
+
+                    _userService.RegisterUserWallet(user);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
