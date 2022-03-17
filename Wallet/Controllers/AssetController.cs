@@ -1,5 +1,5 @@
-﻿using System.Dynamic;
-using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Asset;
@@ -8,6 +8,7 @@ namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class AssetController : Controller
     {
         private readonly IAssetService _assetService;

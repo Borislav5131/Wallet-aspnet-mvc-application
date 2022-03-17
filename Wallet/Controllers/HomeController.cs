@@ -3,7 +3,6 @@
 namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System.Diagnostics;
     using Wallet.Core.ViewModels;
 
     public class HomeController : Controller
@@ -19,6 +18,10 @@ namespace Wallet.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("Home");
+            }
             _notyf.Success("Welcome");
             return View();
         }

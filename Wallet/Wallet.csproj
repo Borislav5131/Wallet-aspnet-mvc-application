@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Wallet.Core\Wallet.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\favicon\" />
+  </ItemGroup>
+
 </Project>

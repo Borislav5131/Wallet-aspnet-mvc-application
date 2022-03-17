@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
@@ -6,6 +7,7 @@ using Wallet.Core.ViewModels.Category;
 
 namespace Wallet.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
