@@ -1,5 +1,7 @@
-﻿using Wallet.Core.Constants;
+﻿using Microsoft.EntityFrameworkCore;
+using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
+using Wallet.Core.ViewModels.User;
 using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Services
@@ -26,5 +28,15 @@ namespace Wallet.Core.Services
             _repo.Add<Infrastructure.Data.Models.Wallet>(wallet);
             _repo.SaveChanges();
         }
+
+        public async Task<IEnumerable<UserListViewModel>> GetUsers()
+            => await _repo.All<User>()
+                .Select(u => new UserListViewModel()
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email
+                })
+                .ToListAsync();
     }
 }
