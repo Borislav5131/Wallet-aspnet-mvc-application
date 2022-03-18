@@ -3,7 +3,7 @@ using static Wallet.Infrastructure.Data.DataConstants;
 
 namespace Wallet.Core.ViewModels.Asset
 {
-    public class CreateAssetFormModel
+    public class CreateAssetModel
     {
         [Required]
         [MaxLength(AssetMaxNameLenght,ErrorMessage = "Name must be max 30 characters!"),MinLength(AssetMinNameLenght,ErrorMessage = "Name must be min 3 characters!")]

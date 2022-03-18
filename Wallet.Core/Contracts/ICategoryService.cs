@@ -10,6 +10,6 @@ namespace Wallet.Core.Contracts
          List<AllCategoryViewModel> GetAllCategories();
          bool Delete(Guid categoryId);
          string GetCategoryName(Guid categoryId);
-         CreateAssetFormModel AssetCreateFormModel (Guid categoryId);
+         CreateAssetModel AssetCreateFormModel (Guid categoryId);
     }
 }

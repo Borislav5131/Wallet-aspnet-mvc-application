@@ -13,8 +13,20 @@ namespace Wallet.Core.Services
         {
             _repo = repo;
         }
+        public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
+            => _repo.All<Asset>()
+                .Where(a => a.Category.Id == categoryId)
+                .Select(a => new AllAssetViewModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    Price = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+                })
+                .ToList();
 
-        public (bool added, string error) Create(CreateAssetFormModel model, byte[] logo)
+        public (bool added, string error) Create(CreateAssetModel model, byte[] logo)
         {
             bool added = false;
             string error = null;
@@ -62,6 +74,77 @@ namespace Wallet.Core.Services
             return (added, error);
         }
 
+        public EditAssetModel GetDetailsOfAsset(Guid assetId)
+            => _repo.All<Asset>()
+                .Where(a => a.Id == assetId)
+                .Select(a => new EditAssetModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    CategoryId = a.CategoryId,
+                    Category = a.Category.Name,
+                    Value = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+                })
+                .FirstOrDefault();
+
+        public (bool isEdit, string error) Edit(EditAssetModel model,byte[] logo)
+        {
+            bool isEdit = false;
+            string error = null;
+
+            var asset = _repo.All<Asset>()
+                .FirstOrDefault(a => a.Id == model.AssetId);
+            var category = _repo.All<Category>()
+                .FirstOrDefault(c => c.Id == model.CategoryId);
+
+            if (asset == null || category == null)
+            {
+                return (isEdit, error = "Invalid operation");
+            }
+
+            asset.Name = model.Name;
+            asset.Abbreviation = model.Abbreviation;
+            asset.Value = model.Value;
+
+            if (asset.Category.Name != model.Category)
+            {
+                var newCategory = _repo.All<Category>().FirstOrDefault(c => c.Name == model.Category);
+
+                if (newCategory == null)
+                {
+                    return (isEdit, error = "Invalid operation");
+                }
+
+                asset.Category = newCategory;
+                asset.CategoryId = newCategory.Id;
+            }
+
+            if (logo != null)
+            {
+                if (logo.Length > 2 * 1024 * 1024)
+                {
+                    return (isEdit, error = "Logo must be max 2 MB");
+                }
+
+                asset.Logo = logo;
+            }
+
+            try
+            {
+                _repo.SaveChanges();
+                isEdit = true;
+            }
+            catch (Exception)
+            {
+                error = "Invalid operation!";
+            }
+
+            return (isEdit, error);
+        }
+
+
         public bool Delete(Guid assetId)
         {
             var asset = _repo.All<Asset>()
@@ -87,18 +170,5 @@ namespace Wallet.Core.Services
 
             return true;
         }
-
-        public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
-          => _repo.All<Asset>()
-                .Where(a => a.Category.Id == categoryId)
-                .Select(a => new AllAssetViewModel()
-                {
-                    AssetId = a.Id,
-                    Name = a.Name,
-                    Abbreviation = a.Abbreviation,
-                    Price = a.Value,
-                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
-                })
-                .ToList();
     }
 }

@@ -94,8 +94,8 @@ namespace Wallet.Core.Services
             return category.Name;
         }
 
-        public CreateAssetFormModel AssetCreateFormModel(Guid categoryId)
-            => new CreateAssetFormModel()
+        public CreateAssetModel AssetCreateFormModel(Guid categoryId)
+            => new CreateAssetModel()
             {
                 CategoryId = categoryId,
                 CategoryName = GetCategoryName(categoryId)

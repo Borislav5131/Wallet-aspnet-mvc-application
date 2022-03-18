@@ -1,0 +1,50 @@
+﻿@model Wallet.Core.ViewModels.Asset.EditAssetModel
+
+<div class="row justify-content-center">
+    <h4 class="text-center">Edit</h4>
+    <hr />
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control"/>
+                <input asp-for="AssetId" value="@Model.AssetId" type="hidden"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Abbreviation" class="control-label"></label>
+                <input asp-for="Abbreviation" class="form-control"/>
+                <span asp-validation-for="Abbreviation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control"/>
+                <input asp-for="CategoryId" value="@Model.CategoryId" type="hidden"/>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control"/>
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Logo</label> 
+                <br/>
+                <img src="@Model.Logo" class="w-25 h-25 m-2"/>
+                <input asp-for="Logo" value="@Model.Logo" type="hidden"/>
+                <input type="file" name="logo" class="form-control-file">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary m-2"/>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    <div class="text-center">
+        <a type="button" class="btn btn-secondary" asp-action="All" asp-route-categoryId="@Model.CategoryId">Back to List</a>
+    </div>
+</div>
+
+
+

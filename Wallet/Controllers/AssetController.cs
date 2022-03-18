@@ -29,7 +29,7 @@ namespace Wallet.Controllers
 
             ViewData["CategoryName"] = _categoryService.GetCategoryName(categoryId);
             ViewData["CategoryId"] = categoryId;
-            
+
             return View(assets);
         }
 
@@ -42,7 +42,7 @@ namespace Wallet.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateAssetFormModel model, IFormFile logo)
+        public IActionResult Create(CreateAssetModel model, IFormFile logo)
         {
             if (!ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace Wallet.Controllers
             }
 
             var convertedLogo = ConvertLogoToBytes(logo);
-            var (added, error) = _assetService.Create(model,convertedLogo);
+            var (added, error) = _assetService.Create(model, convertedLogo);
 
             if (!added)
             {
@@ -81,6 +81,39 @@ namespace Wallet.Controllers
             return Redirect("/Category/All");
         }
 
+        [HttpGet]
+        public IActionResult Edit(Guid assetId)
+        {
+            var model = _assetService.GetDetailsOfAsset(assetId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditAssetModel model, IFormFile? logo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            byte[] convertedLogo = null;
+
+            if (logo != null)
+            {
+                convertedLogo = ConvertLogoToBytes(logo);
+            }
+
+            var (isEdit, error) = _assetService.Edit(model,convertedLogo);
+
+            if (!isEdit)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = error });
+            }
+
+            _notyf.Success("Successfully edit asset.");
+            return Redirect($"/Asset/All?categoryId={model.CategoryId}");
+        }
 
         private byte[] ConvertLogoToBytes(IFormFile logo)
         {
