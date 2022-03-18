@@ -11,10 +11,10 @@ namespace Wallet.Core.Services
 
         public AssetService(IRepository repo)
         {
-            this._repo = repo;
+            _repo = repo;
         }
 
-        public (bool added, string error) Create(CreateAssetFormModel model,byte[] logo)
+        public (bool added, string error) Create(CreateAssetFormModel model, byte[] logo)
         {
             bool added = false;
             string error = null;
@@ -56,7 +56,7 @@ namespace Wallet.Core.Services
             }
             catch (Exception)
             {
-                error = "Cound not add asset!";
+                error = "Cound not create asset!";
             }
 
             return (added, error);
@@ -67,7 +67,7 @@ namespace Wallet.Core.Services
             var asset = _repo.All<Asset>()
                 .FirstOrDefault(a => a.Id == assetId);
             var category = _repo.All<Category>()
-                .FirstOrDefault(c=>c.Id == asset.CategoryId);
+                .FirstOrDefault(c => c.Id == asset.CategoryId);
 
             if (asset == null || category == null)
             {
@@ -89,9 +89,8 @@ namespace Wallet.Core.Services
         }
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
-        {
-            return _repo.All<Asset>()
-                .Where(a=>a.Category.Id == categoryId)
+          => _repo.All<Asset>()
+                .Where(a => a.Category.Id == categoryId)
                 .Select(a => new AllAssetViewModel()
                 {
                     AssetId = a.Id,
@@ -99,8 +98,7 @@ namespace Wallet.Core.Services
                     Abbreviation = a.Abbreviation,
                     Price = a.Value,
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
-        })
-                .ToList(); ;
-        }
+                })
+                .ToList();
     }
 }

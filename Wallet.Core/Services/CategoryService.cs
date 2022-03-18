@@ -1,5 +1,6 @@
 ﻿using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
+using Wallet.Core.ViewModels.Asset;
 using Wallet.Core.ViewModels.Category;
 using Wallet.Infrastructure.Data.Models;
 
@@ -92,5 +93,12 @@ namespace Wallet.Core.Services
 
             return category.Name;
         }
+
+        public CreateAssetFormModel AssetCreateFormModel(Guid categoryId)
+            => new CreateAssetFormModel()
+            {
+                CategoryId = categoryId,
+                CategoryName = GetCategoryName(categoryId)
+            };
     }
 }

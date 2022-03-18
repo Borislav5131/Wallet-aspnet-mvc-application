@@ -15,7 +15,7 @@ namespace Wallet.Controllers
 
         public CategoryController(ICategoryService categoryService, INotyfService notyf)
         {
-            this._categoryService = categoryService;
+            _categoryService = categoryService;
             _notyf = notyf;
         }
 
