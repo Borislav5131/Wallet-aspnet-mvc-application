@@ -68,20 +68,6 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(Guid assetId)
-        {
-            var deleted = _assetService.Delete(assetId);
-
-            if (!deleted)
-            {
-                return View("Error", new ErrorViewModel() { ErrorMessage = "Asset can't be deleted!" });
-            }
-
-            _notyf.Success("Successfully delete asset.");
-            return Redirect("/Category/All");
-        }
-
-        [HttpGet]
         public IActionResult Edit(Guid assetId)
         {
             var model = _assetService.GetDetailsOfAsset(assetId);
@@ -113,6 +99,20 @@ namespace Wallet.Controllers
 
             _notyf.Success("Successfully edit asset.");
             return Redirect($"/Asset/All?categoryId={model.CategoryId}");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(Guid assetId)
+        {
+            var deleted = _assetService.Delete(assetId);
+
+            if (!deleted)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Asset can't be deleted!" });
+            }
+
+            _notyf.Success("Successfully delete asset.");
+            return Redirect("/Category/All");
         }
 
         private byte[] ConvertLogoToBytes(IFormFile logo)

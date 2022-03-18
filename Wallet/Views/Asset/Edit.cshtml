@@ -33,7 +33,7 @@
                 <br/>
                 <img src="@Model.Logo" class="w-25 h-25 m-2"/>
                 <input asp-for="Logo" value="@Model.Logo" type="hidden"/>
-                <input type="file" name="logo" class="form-control-file">
+                <input type="file" name="logo" class="form-control-file" accept="image/png, image/jpeg">
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary m-2"/>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Wallet.Infrastructure.Data.DataConstants;
+using static Wallet.Infrastructure.Data.DataConstants.Asset;
+using static Wallet.Infrastructure.Data.DataConstants.Category;
 
 namespace Wallet.Core.ViewModels.Asset
 {
