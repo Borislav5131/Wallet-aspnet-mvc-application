@@ -53,10 +53,36 @@ namespace Wallet.Controllers
             return Redirect("/Category/All");
         }
 
-        [Authorize(Roles = Administrator)]
-        public IActionResult Edit() => View();
+        //public IActionResult Details() => View();
 
-        public IActionResult Details() => View();
+        [HttpGet]
+        [Authorize(Roles = Administrator)]
+        public IActionResult Edit(Guid categoryId)
+        {
+            var model = _categoryService.GetDetailsOfCategory(categoryId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Administrator)]
+        public IActionResult Edit(EditCategoryModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var (isEdit, error) = _categoryService.Edit(model);
+
+            if (!isEdit)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = error });
+            }
+
+            _notyf.Success("Successfully edit asset.");
+            return Redirect($"/Category/Edit?categoryId={model.CategoryId}");
+        }
 
         [HttpGet]
         [Authorize(Roles = Administrator)]

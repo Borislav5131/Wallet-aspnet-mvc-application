@@ -6,6 +6,7 @@ namespace Wallet.Core.ViewModels.Asset
 {
     public class EditAssetModel
     {
+        [Required]
         public Guid AssetId { get; set; }
 
         [Required]
@@ -16,6 +17,7 @@ namespace Wallet.Core.ViewModels.Asset
         [MaxLength(AssetMaxAbbreviationLenght, ErrorMessage = "Abbreviation must be max 30 characters!"), MinLength(AssetMinAbbreviationLenght, ErrorMessage = "Abbreviation must be min 3 characters!")]
         public string Abbreviation { get; set; }
 
+        [Required]
         public Guid CategoryId { get; set; }
 
         [Required]

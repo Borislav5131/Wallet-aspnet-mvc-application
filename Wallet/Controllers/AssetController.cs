@@ -104,7 +104,7 @@ namespace Wallet.Controllers
             }
 
             _notyf.Success("Successfully edit asset.");
-            return Redirect($"/Asset/All?categoryId={model.CategoryId}");
+            return Redirect($"/Asset/Edit?assetId={model.AssetId}");
         }
 
         [HttpGet]

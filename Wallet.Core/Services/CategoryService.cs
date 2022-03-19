@@ -57,6 +57,46 @@ namespace Wallet.Core.Services
                 .ToList();
         }
 
+        public EditCategoryModel GetDetailsOfCategory(Guid categoryId)
+            => _repo.All<Category>()
+                .Where(c => c.Id == categoryId)
+                .Select(c => new EditCategoryModel()
+                {
+                    CategoryId = c.Id,
+                    Name = c.Name,
+                    Description = c.Description
+                })
+                .First();
+
+        public (bool isEdit, string error) Edit(EditCategoryModel model)
+        {
+            bool isEdit = false;
+            string error = null;
+
+            var category = _repo.All<Category>()
+                .FirstOrDefault(c => c.Id == model.CategoryId);
+
+            if (category == null)
+            {
+                return (isEdit, error = "Invalid operation");
+            }
+
+            category.Name = model.Name;
+            category.Description = model.Description;
+
+            try
+            {
+                _repo.SaveChanges();
+                isEdit = true;
+            }
+            catch (Exception)
+            {
+                error = "Invalid operation!";
+            }
+
+            return (isEdit, error);
+        }
+
         public bool Delete(Guid categoryId)
         {
             var category = _repo.All<Category>()

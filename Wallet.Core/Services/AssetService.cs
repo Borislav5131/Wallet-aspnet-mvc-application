@@ -87,7 +87,7 @@ namespace Wallet.Core.Services
                     Value = a.Value,
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
                 })
-                .FirstOrDefault();
+                .First();
 
         public (bool isEdit, string error) Edit(EditAssetModel model,byte[] logo)
         {

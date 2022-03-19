@@ -11,5 +11,7 @@ namespace Wallet.Core.Contracts
          bool Delete(Guid categoryId);
          string GetCategoryName(Guid categoryId);
          CreateAssetModel AssetCreateFormModel (Guid categoryId);
+         EditCategoryModel GetDetailsOfCategory(Guid categoryId);
+         (bool isEdit,string error) Edit(EditCategoryModel model);
     }
 }
