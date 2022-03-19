@@ -1,21 +1,24 @@
-﻿@model IEnumerable<Wallet.Core.ViewModels.Asset.AllAssetViewModel>
+﻿@using static Wallet.Core.Constants.UserConstants.Roles
+@model IEnumerable<Wallet.Core.ViewModels.Asset.AllAssetViewModel>
 
 <p>
     <h1 class="text-center">Assets in @ViewData["CategoryName"]</h1>
 </p>
-
-<div class="text-center">
-    <a role="button" class="btn btn-primary" asp-action="Create" asp-route-categoryId="@ViewData["CategoryId"]">Create Asset</a>
-</div>
-<br/>
+@if (User.IsInRole(Administrator))
+{
+    <div class="text-center">
+        <a role="button" class="btn btn-primary" asp-action="Create" asp-route-categoryId="@ViewData["CategoryId"]">Create Asset</a>
+    </div>
+}
+<br />
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-3">
             <div class="card border-success mb-4" style="max-width: 18rem">
                 <div class="card-header bg-transparent border-success text-dark">
-                    <img src="@item.Logo" class="w-25 h-25"/>
-                     @item.Abbreviation
+                    <img src="@item.Logo" class="w-25 h-25" />
+                    @item.Abbreviation
                 </div>
                 <div class="card-body text-success">
                     <h5 class="card-title">@item.Name</h5>
@@ -23,8 +26,11 @@
                 </div>
                 <div class="card-footer bg-transparent border-success">
                     <a role="button" class="btn btn-outline-success" asp-action="Buy" asp-route-assetId="@item.AssetId">Buy</a>
-                    <a role="button" class="btn btn-outline-info" asp-action="Edit" asp-route-assetId="@item.AssetId">Edit</a>
-                    <a role="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-assetId="@item.AssetId">Delete</a>
+                    @if (User.IsInRole(Administrator))
+                    {
+                        <a role="button" class="btn btn-outline-info" asp-action="Edit" asp-route-assetId="@item.AssetId">Edit</a>
+                        <a role="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-assetId="@item.AssetId">Delete</a>
+                    }
                 </div>
             </div>
         </div>

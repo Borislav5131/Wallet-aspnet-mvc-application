@@ -5,6 +5,8 @@ using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Category;
 
+using static Wallet.Core.Constants.UserConstants.Roles;
+
 namespace Wallet.Controllers
 {
     [Authorize]
@@ -28,6 +30,7 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Administrator)]
         public IActionResult Create() => View();
 
         [HttpPost]
@@ -50,12 +53,13 @@ namespace Wallet.Controllers
             return Redirect("/Category/All");
         }
 
-
+        [Authorize(Roles = Administrator)]
         public IActionResult Edit() => View();
 
         public IActionResult Details() => View();
 
         [HttpGet]
+        [Authorize(Roles = Administrator)]
         public IActionResult Delete(Guid categoryId)
         {
             var deleted = _categoryService.Delete(categoryId);

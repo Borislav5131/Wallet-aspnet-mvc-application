@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Wallet.Core.ViewModels.Category.AllCategoryViewModel>
+﻿@using static Wallet.Core.Constants.UserConstants.Roles
+@model IEnumerable<Wallet.Core.ViewModels.Category.AllCategoryViewModel>
 
 @{
     ViewData["Title"] = "All";
@@ -8,9 +9,12 @@
     <h1 class="text-center">Categories</h1>
 </p>
 
-<div class="text-center">
-    <a role="button" class="btn btn-primary" asp-action="Create">Create Category</a>
-</div>
+@if (User.IsInRole(Administrator))
+{
+    <div class="text-center">
+        <a role="button" class="btn btn-primary" asp-action="Create">Create Category</a>
+    </div>
+}
 <br />
 <div class="row">
     @foreach (var item in Model)
@@ -23,8 +27,11 @@
                 </div>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a role="button" class="btn btn-outline-success m-1" asp-controller="Asset" asp-action="All" asp-route-categoryId="@item.CategoryId">Assets</a>
-                    <a role="button" class="btn btn-outline-info m-1" asp-action="Edit" asp-route-categoryId="@item.CategoryId">Edit</a>
-                    <a role="button" class="btn btn-outline-danger m-1" asp-action="Delete" asp-route-categoryId="@item.CategoryId">Delete</a>
+                    @if (User.IsInRole(Administrator))
+                    {
+                        <a role="button" class="btn btn-outline-info m-1" asp-action="Edit" asp-route-categoryId="@item.CategoryId">Edit</a>
+                        <a role="button" class="btn btn-outline-danger m-1" asp-action="Delete" asp-route-categoryId="@item.CategoryId">Delete</a>
+                    }
                 </div>
             </div>
         </div>

@@ -4,6 +4,8 @@ using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Asset;
 
+using static Wallet.Core.Constants.UserConstants.Roles;
+
 namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
@@ -34,6 +36,7 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Administrator)]
         public IActionResult Create(Guid categoryId)
         {
             var model = _categoryService.AssetCreateFormModel(categoryId);
@@ -42,6 +45,7 @@ namespace Wallet.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Administrator)]
         public IActionResult Create(CreateAssetModel model, IFormFile logo)
         {
             if (!ModelState.IsValid)
@@ -68,6 +72,7 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Administrator)]
         public IActionResult Edit(Guid assetId)
         {
             var model = _assetService.GetDetailsOfAsset(assetId);
@@ -76,6 +81,7 @@ namespace Wallet.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Administrator)]
         public IActionResult Edit(EditAssetModel model, IFormFile? logo)
         {
             if (!ModelState.IsValid)
@@ -102,6 +108,7 @@ namespace Wallet.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Administrator)]
         public IActionResult Delete(Guid assetId)
         {
             var deleted = _assetService.Delete(assetId);

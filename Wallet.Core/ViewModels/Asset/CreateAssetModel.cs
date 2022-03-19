@@ -21,7 +21,7 @@ namespace Wallet.Core.ViewModels.Asset
         public string CategoryName { get; set; }
 
         [Required]
-        [Range(AssetMinValue, AssetMaxValue,ErrorMessage = "Value must be between 1 and 100000")]
+        [Range(AssetMinValue, AssetMaxValue,ErrorMessage = "Value must be between 0 and 100000")]
         public decimal Value { get; set; }
     }
 }
