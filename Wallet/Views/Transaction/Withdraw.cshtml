@@ -1,0 +1,42 @@
+﻿@model Wallet.Core.ViewModels.Transaction.WithdrawModel
+
+<div class="row justify-content-center">
+    <h4 class="text-center">Withdraw</h4>
+    <hr />
+    <div class="col-md-4">
+        @if (@Model.UserBalance >= 5)
+        {
+            <form asp-action="Withdraw">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <p>Value: $<span id="text"></span></p>
+                    <input asp-for="Value" type="range" class="form-range" min="5" max="@Model.UserBalance" id="myRange">
+                    <input asp-for="UserBalance" value="@Model.UserBalance" type="hidden"/>
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Withdraw" class="btn btn-primary mb-2 mt-2"/>
+                    <button class="btn btn-close mb-2 mt-2" style="float: right" asp-controller="Home" asp-action="Index"></button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <h4 class="text-center">Minimum withdraw is $5!</h4>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("text");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    </script>
+}

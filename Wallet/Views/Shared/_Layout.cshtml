@@ -30,7 +30,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="Deposit">Deposit</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="Withdraw">Withdraw</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="Withdraw" asp-route-user="@User.Identity.Name">Withdraw</a>
                             </li>
                         }
                     </ul>

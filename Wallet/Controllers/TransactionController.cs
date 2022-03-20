@@ -43,21 +43,41 @@ namespace Wallet.Controllers
                 return View("Error", new ErrorViewModel() { ErrorMessage = error });
             }
 
-            _notyf.Success("Successfully transaction.");
-            return View();
+            _notyf.Success("Successfully deposit!");
+            return Redirect("/");
         }
 
         [HttpGet]
-        public IActionResult Withdraw()
+        public IActionResult Withdraw(string user)
         {
-            return View();
+            var model = _transactionService.GetUserWithdrawModel(user);
+
+            if (model == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Invaid operation!"});
+            }
+
+            return View(model);
         }
 
-        //[HttpPost]
-        //public IActionResult Withdraw()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public IActionResult Withdraw(WithdrawModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var (isWithdraw, error) = _transactionService.Withdraw(model, User.Identity.Name);
+
+            if (!isWithdraw)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = error });
+            }
+
+            _notyf.Success("Successfully withdraw!");
+            return Redirect("/");
+        }
 
         //public ActionResult Edit(int id)
         //{

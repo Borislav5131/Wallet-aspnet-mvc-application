@@ -38,5 +38,9 @@ namespace Wallet.Core.Services
                     Email = u.Email
                 })
                 .ToListAsync();
+
+        public User? GetUserByName(string user)
+            => _repo.All<User>()
+                .FirstOrDefault(u => u.UserName == user);
     }
 }
