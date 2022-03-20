@@ -12,5 +12,7 @@ namespace Wallet.Infrastructure.Data.Models
 
         [Range(UserBalanceMinValue, UserBalanceMaxValue)]
         public decimal Balance { get; set; }
+
+        public List<Transaction> Transactions { get; set; }
     }
 }

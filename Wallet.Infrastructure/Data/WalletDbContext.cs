@@ -27,5 +27,7 @@ namespace Wallet.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Models.Wallet> Wallets { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }

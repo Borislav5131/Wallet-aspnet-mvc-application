@@ -34,5 +34,13 @@
             public const double WalletTotalAmountMaxValue = double.MaxValue;
             public const double WalletTotalAmountMinValue = 0;
         }
+
+        public class Transaction
+        {
+            public const double TransactionMaxValue = 100000;
+            public const double TransactionMinValue = 0;
+            public const double TransactionMaxAmount = 100000;
+            public const double TransactionMinAmount = 1;
+        }
     }
 }
