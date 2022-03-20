@@ -18,6 +18,6 @@ namespace Wallet.Infrastructure.Data.Models
         [Range(WalletTotalAmountMinValue,WalletTotalAmountMaxValue)]
         public decimal TotalValue { get; set; }
 
-        public List<Asset> Assets { get; set; }
+        public List<Asset> Assets { get; set; } = new List<Asset>();
     }
 }
