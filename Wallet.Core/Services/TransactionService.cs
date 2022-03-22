@@ -18,6 +18,19 @@ namespace Wallet.Core.Services
             _userService = userService;
         }
 
+        public List<UserTransactionsViewModel> GetUserTransactions(string username)
+            => _repo.All<Transaction>()
+                .Where(t=>t.User.UserName == username)
+                .Select(t=> new UserTransactionsViewModel()
+                {
+                    Username = t.User.UserName,
+                    Date = t.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Type = t.Type.ToString(),
+                    Value = t.Value,
+                    Amont = t.Amount
+                })
+                .ToList();
+
         public WithdrawModel GetUserWithdrawModel(string userName)
         {
             var user = _userService.GetUserByName(userName);

@@ -1,4 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Wallet.Core.Contracts;
+using Wallet.Core.ViewModels.Home;
 
 namespace Wallet.Controllers
 {
@@ -7,20 +9,26 @@ namespace Wallet.Controllers
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly INotyfService _notyf;
+        private readonly ITransactionService _transactionService;
 
-        public HomeController(ILogger<HomeController> logger, INotyfService notyf)
+        public HomeController(INotyfService notyf,
+            ITransactionService transactionService)
         {
-            _logger = logger;
             _notyf = notyf;
+            _transactionService = transactionService;
         }
 
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View("Home");
+                var model = new HomeViewModel()
+                {
+                    UserTransactionsViewModel = _transactionService.GetUserTransactions(User.Identity.Name)
+                };
+
+                return View("Home",model);
             }
             _notyf.Success("Welcome");
             return View();

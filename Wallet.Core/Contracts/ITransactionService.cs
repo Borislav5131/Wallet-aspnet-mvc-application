@@ -7,5 +7,6 @@ namespace Wallet.Core.Contracts
         (bool isDeposit, string error) Deposit(DepositModel model, string? identityName);
         (bool isWithdraw, string error) Withdraw(WithdrawModel model, string? identityName);
         WithdrawModel GetUserWithdrawModel(string user);
+        List<UserTransactionsViewModel> GetUserTransactions(string username);
     }
 }
