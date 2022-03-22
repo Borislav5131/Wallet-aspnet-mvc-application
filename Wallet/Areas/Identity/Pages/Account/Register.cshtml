@@ -8,7 +8,7 @@
     <div class="col-md-4 offset-md-4">
         <h1>@ViewData["Title"]</h1>
 
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h2>Create a new account.</h2>
             <hr/>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,11 +32,49 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="mb-2 mt-2 w-100 btn btn-lg btn-primary">Register</button>
+            <div>
+                <label>Image</label> 
+                <br/>
+                <input type="file" name="image" id="file-upload" class="form-control-file" accept="image/png, image/jpeg" required="">
+            </div>
+            <br/>
+            <button id="registerSubmit" type="submit" class="mb-2 mt-2 w-100 btn btn-lg btn-primary" onclick="return VerifyUploadSizeIsOK()">Register</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#registerSubmit').bind("click",function() 
+            { 
+                var imgVal = $('#file-upload').val(); 
+                if(imgVal=='') 
+                { 
+                    alert("Image is required!"); 
+                    return false; 
+                } 
+
+
+            }); 
+        });
+    </script> 
+
+    <script type="text/javascript">
+        function VerifyUploadSizeIsOK()
+        {
+            var UploadFieldID = "file-upload";
+            var MaxSizeInBytes = 2097152;
+            var fld = document.getElementById(UploadFieldID);
+            if( fld.files && fld.files.length == 1 && fld.files[0].size > MaxSizeInBytes )
+            {
+                alert("The image size must be no more than " + parseInt(MaxSizeInBytes/1024/1024) + "MB");
+                return false;
+            }
+            return true;
+        } 
+    </script>
+
 }

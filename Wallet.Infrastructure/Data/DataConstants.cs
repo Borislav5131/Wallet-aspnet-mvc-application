@@ -6,6 +6,7 @@
         {
             public const double UserBalanceMaxValue = double.MaxValue;
             public const double UserBalanceMinValue = 0;
+            public const int UserMaxImageSize = 2 * 1024 * 1024;
         }
         
         public class Asset

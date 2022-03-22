@@ -62,7 +62,7 @@ namespace Wallet.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(IFormFile image)
         {
             string returnUrl = Url.Content("~/");
 
@@ -72,6 +72,7 @@ namespace Wallet.Areas.Identity.Pages.Account
                 {
                     UserName = Input.UserName,
                     Email = Input.Email,
+                    Image = ConvertImageToBytes(image)
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -91,6 +92,14 @@ namespace Wallet.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        private byte[] ConvertImageToBytes(IFormFile image)
+        {
+            var ms = new MemoryStream();
+            image.CopyTo(ms);
+
+            return ms.ToArray();
         }
     }
 }
