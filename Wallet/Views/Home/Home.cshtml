@@ -6,10 +6,10 @@
 
 <!-- User information -->
 <div class="card">
-    <img src="img.jpg" alt="John" style="width:100%">
-    <h1>John Doe</h1>
-    <p class="title">CEO & Founder, Example</p>
-    <p>Harvard University</p>
+    <img src="@Model.UserViewModel.Image" style="width:100%">
+    <h1>@Model.UserViewModel.Username</h1>
+    <p class="title">@Model.UserViewModel.Email</p>
+    <p class="text-dark" style="font-size: 2rem">Balance: $@Model.UserViewModel.Balance</p>
     <p><button class="cardbtn">Contact</button></p>
 </div>
 

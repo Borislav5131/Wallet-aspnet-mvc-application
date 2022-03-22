@@ -42,5 +42,17 @@ namespace Wallet.Core.Services
         public User? GetUserByName(string user)
             => _repo.All<User>()
                 .FirstOrDefault(u => u.UserName == user);
+
+        public UserViewModel GetUserInformation(string username)
+            => _repo.All<User>()
+                .Where(u=>u.UserName == username)
+                .Select(u=> new UserViewModel()
+                {
+                    Username = u.UserName,
+                    Email = u.Email,
+                    Balance = u.Balance,
+                    Image = $"data:image;base64,{Convert.ToBase64String(u.Image)}"
+                })
+                .First();
     }
 }

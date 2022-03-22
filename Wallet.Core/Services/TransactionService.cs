@@ -21,6 +21,7 @@ namespace Wallet.Core.Services
         public List<UserTransactionsViewModel> GetUserTransactions(string username)
             => _repo.All<Transaction>()
                 .Where(t=>t.User.UserName == username)
+                .OrderByDescending(t => t.Date)
                 .Select(t=> new UserTransactionsViewModel()
                 {
                     Username = t.User.UserName,

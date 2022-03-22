@@ -8,5 +8,6 @@ namespace Wallet.Core.Contracts
         void RegisterUserWallet(User user);
         Task<IEnumerable<UserListViewModel>> GetUsers();
         User? GetUserByName(string user);
+        UserViewModel GetUserInformation(string username);
     }
 }
