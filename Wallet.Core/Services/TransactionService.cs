@@ -32,6 +32,16 @@ namespace Wallet.Core.Services
                 })
                 .ToList();
 
+        public Transaction CreateBuyTransaction(User user,decimal amount,decimal value)
+            => new Transaction()
+            {
+                User = user,
+                Date = DateTime.UtcNow,
+                Value = value,
+                Amount = amount,
+                Type = TransactionTypes.Buy,
+            };
+
         public WithdrawModel GetUserWithdrawModel(string userName)
         {
             var user = _userService.GetUserByName(userName);

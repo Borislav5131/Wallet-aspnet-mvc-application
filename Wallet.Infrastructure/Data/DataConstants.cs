@@ -18,7 +18,9 @@
             public const double AssetMaxValue = 100000;
             public const double AssetMinValue = 0;
             public const double AssetMaxAmount = 100000;
-            public const double AssetMinAmount = 1;
+            public const double AssetMinAmount = 10;
+            public const double AssetMaxQuantity = 1000;
+            public const double AssetMinQuantity = 0;
             public const int AssetMaxLogoSize = 2 * 1024 * 1024;
         }
         

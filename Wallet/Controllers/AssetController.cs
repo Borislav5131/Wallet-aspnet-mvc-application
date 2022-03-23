@@ -29,6 +29,11 @@ namespace Wallet.Controllers
         {
             var assets = _assetService.GetAssetsInCategory(categoryId);
 
+            if (assets == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
+
             ViewData["CategoryName"] = _categoryService.GetCategoryName(categoryId);
             ViewData["CategoryId"] = categoryId;
 
@@ -40,6 +45,11 @@ namespace Wallet.Controllers
         public IActionResult Create(Guid categoryId)
         {
             var model = _categoryService.AssetCreateFormModel(categoryId);
+
+            if (model == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
 
             return View(model);
         }
@@ -76,6 +86,11 @@ namespace Wallet.Controllers
         public IActionResult Edit(Guid assetId)
         {
             var model = _assetService.GetDetailsOfAsset(assetId);
+
+            if (model == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
 
             return View(model);
         }
@@ -120,6 +135,39 @@ namespace Wallet.Controllers
 
             _notyf.Success("Successfully delete asset.");
             return Redirect("/Category/All");
+        }
+
+        [HttpGet]
+        public IActionResult Buy(Guid assetId)
+        {
+            var model = _assetService.GetBuyInformationOfAsset(assetId,User.Identity.Name);
+
+            if (model == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Buy(BuyAssetModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var (isBuyed, error) = _assetService.BuyAsset(model, User.Identity.Name);
+
+            if (!isBuyed)
+            {
+                ModelState.AddModelError(String.Empty, error);
+                return View(model);
+            }
+
+            _notyf.Success($"Successfully buy {model.Abbreviation}");
+            return Redirect("/");
         }
 
         private byte[] ConvertLogoToBytes(IFormFile logo)

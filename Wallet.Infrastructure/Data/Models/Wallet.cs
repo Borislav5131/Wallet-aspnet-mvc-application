@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using static Wallet.Infrastructure.Data.DataConstants.Wallet;
 
 namespace Wallet.Infrastructure.Data.Models
@@ -7,7 +8,7 @@ namespace Wallet.Infrastructure.Data.Models
     public class Wallet
     {
         [Key]
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         public string UserId { get; set; }

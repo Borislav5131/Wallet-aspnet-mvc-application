@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Wallet.Core.Contracts;
 using Wallet.Infrastructure.Data.Models;
+using Wallet = Wallet.Infrastructure.Data.Models.Wallet;
 
 namespace Wallet.Areas.Identity.Pages.Account
 {
@@ -72,14 +73,22 @@ namespace Wallet.Areas.Identity.Pages.Account
                 {
                     UserName = Input.UserName,
                     Email = Input.Email,
-                    Image = ConvertImageToBytes(image)
+                    Image = ConvertImageToBytes(image),
                 };
+
+                var wallet = new Infrastructure.Data.Models.Wallet()
+                {
+                    User = user,
+                    UserId = user.Id
+                };
+
+                user.Wallet = wallet;
+                user.WalletId = wallet.Id;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _userService.RegisterUserWallet(user);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _notyf.Success("Successfully register!");
                     return LocalRedirect(returnUrl);

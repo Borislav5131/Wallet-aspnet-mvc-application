@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wallet.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Wallet.Infrastructure.Data;
 namespace Wallet.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220323122826_AssetUpdate")]
+    partial class AssetUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,9 +316,6 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid>("WalletId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -326,9 +325,6 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("WalletId")
-                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -344,9 +340,12 @@ namespace Wallet.Infrastructure.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Wallets");
                 });
@@ -428,15 +427,15 @@ namespace Wallet.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
+            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
                 {
-                    b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", "Wallet")
-                        .WithOne("User")
-                        .HasForeignKey("Wallet.Infrastructure.Data.Models.User", "WalletId")
+                    b.HasOne("Wallet.Infrastructure.Data.Models.User", "User")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Wallet.Infrastructure.Data.Models.Wallet", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Wallet");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Category", b =>
@@ -447,14 +446,14 @@ namespace Wallet.Infrastructure.Data.Migrations
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
                 {
                     b.Navigation("Transactions");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
                 {
                     b.Navigation("Assets");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

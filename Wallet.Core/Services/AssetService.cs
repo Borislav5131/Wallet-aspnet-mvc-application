@@ -8,10 +8,16 @@ namespace Wallet.Core.Services
     public class AssetService : IAssetService
     {
         private readonly IRepository _repo;
+        private readonly IUserService _userService;
+        private readonly ITransactionService _transactionService;
 
-        public AssetService(IRepository repo)
+        public AssetService(IRepository repo,
+            IUserService userService,
+            ITransactionService transactionService)
         {
             _repo = repo;
+            _userService = userService;
+            _transactionService = transactionService;
         }
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
             => _repo.All<Asset>()
@@ -142,6 +148,69 @@ namespace Wallet.Core.Services
             }
 
             return (isEdit, error);
+        }
+
+        public BuyAssetModel GetBuyInformationOfAsset(Guid assetId, string? userName)
+            => _repo.All<Asset>()
+                .Where(a=>a.Id == assetId)
+                .Select(a=> new BuyAssetModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    Value = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo),
+                    UserBalance = _userService.GetUserBalance(userName)
+                })
+                .First();
+
+        public (bool isBuyed, string error) BuyAsset(BuyAssetModel model, string? username)
+        {
+            bool isBuyed = false;
+            string error = String.Empty;
+            
+            var asset = _repo.All<Asset>().FirstOrDefault(a => a.Id == model.AssetId);
+            var user = _repo.All<User>().FirstOrDefault(a => a.UserName == username);
+
+            if (asset == null || user == null)
+            {
+                return (isBuyed, error = "Not found!");
+            }
+
+            if (model.Amount > model.UserBalance)
+            {
+                return (isBuyed, error = "Not enough money!");
+            }
+
+            var userAssets = _repo.All<Infrastructure.Data.Models.Wallet>()
+                .Where(w => w.User == user)
+                .Select(w => w.Assets)
+                .First();
+
+            if (!userAssets.Contains(asset))
+            {
+                userAssets.Add(asset);
+            }
+
+            user.Balance -= model.Amount;
+            asset.Amount += model.Amount;
+            asset.Quantity += model.Quantity;
+
+            var transaction = _transactionService.CreateBuyTransaction(user,model.Amount,model.Value);
+            user.Transactions.Add(transaction);
+
+            try
+            {
+                _repo.Add<Transaction>(transaction);
+                _repo.SaveChanges();
+                isBuyed = true;
+            }
+            catch (Exception)
+            {
+                error = "Could not save!";
+            }
+
+            return (isBuyed, error);
         }
 
 

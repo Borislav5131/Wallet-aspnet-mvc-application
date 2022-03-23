@@ -9,5 +9,7 @@ namespace Wallet.Core.Contracts
         bool Delete(Guid assetId);
         EditAssetModel GetDetailsOfAsset(Guid assetId);
         (bool isEdit, string error) Edit(EditAssetModel model,byte[] logo);
+        BuyAssetModel GetBuyInformationOfAsset(Guid assetId, string? identityName);
+        (bool isBuyed, string error) BuyAsset(BuyAssetModel model, string? identityName);
     }
 }

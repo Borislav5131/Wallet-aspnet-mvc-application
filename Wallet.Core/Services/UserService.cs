@@ -15,20 +15,6 @@ namespace Wallet.Core.Services
             _repo = repo;
         }
 
-        public void RegisterUserWallet(User user)
-        {
-            var wallet = new Infrastructure.Data.Models.Wallet()
-            {
-                User = user,
-                UserId = user.Id
-            };
-
-            user.Wallet = wallet;
-
-            _repo.Add<Infrastructure.Data.Models.Wallet>(wallet);
-            _repo.SaveChanges();
-        }
-
         public async Task<IEnumerable<UserListViewModel>> GetUsers()
             => await _repo.All<User>()
                 .Select(u => new UserListViewModel()
@@ -53,6 +39,12 @@ namespace Wallet.Core.Services
                     Balance = u.Balance,
                     Image = $"data:image;base64,{Convert.ToBase64String(u.Image)}"
                 })
+                .First();
+
+        public decimal GetUserBalance(string? userName)
+            => _repo.All<User>()
+                .Where(u => u.UserName == userName)
+                .Select(u => u.Balance)
                 .First();
     }
 }

@@ -1,0 +1,50 @@
+﻿@model Wallet.Core.ViewModels.Asset.BuyAssetModel
+
+<div class="row justify-content-center mt-25">
+    <h4 class="text-center">Buy @Model.Abbreviation | @Model.Name</h4>
+    <hr />
+    <div class="col-md-4">
+        <form asp-action="Buy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group text-center mt-2">
+                <img src="@Model.Logo" class="w-25 h-25"/>
+                <input asp-for="AssetId" value="@Model.AssetId" hidden="" readonly=""/>
+                <input asp-for="Abbreviation" value="@Model.Abbreviation" hidden="" readonly=""/>
+                <input asp-for="Name" value="@Model.Name" hidden="" readonly=""/>
+                <input asp-for="Logo" value="@Model.Logo" hidden="" readonly=""/>
+                <input asp-for="Value" value="@Model.Value" hidden="" readonly=""/>
+                <input asp-for="UserBalance" value="@Model.UserBalance" hidden="" readonly=""/>
+            </div>
+            <div class="form-group text-center mt-2">
+                <label asp-for="Value" class="control-label" style="font-size: 2rem">Value: $@Model.Value</label>
+            </div>
+            <div class="form-group text-center mt-2">
+                <label asp-for="UserBalance" class="control-label" style="font-size: 1.8rem"> Your balance: $@Model.UserBalance</label>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Amount" class="control-label" style="font-size: 1.3rem"></label>
+                <input type="number" asp-for="Amount" class="form-control" oninput="calcQuantity(this.value, @Model.Value)" min="10" value="10" style="font-size: 1.2rem"/>
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Quantity" class="control-label" style="font-size: 1.3rem"></label>
+                <input id="quantity" asp-for="Quantity" value="@((10/Model.Value).ToString("F5"))" class="form-control" style="font-size: 1.2rem" readonly=""/>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group text-center">
+                <input type="submit" value="Buy" class="btn btn-primary mb-2 mt-3" style="font-size: 1.5rem"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script type="text/javascript">
+        function calcQuantity(amount, price) {
+            document.getElementById('quantity').value = (amount / price).toFixed(5);
+        }
+    </script>
+}
