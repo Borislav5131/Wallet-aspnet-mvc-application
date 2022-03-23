@@ -95,7 +95,7 @@ namespace Wallet.Core.Services
                 })
                 .First();
 
-        public (bool isEdit, string error) Edit(EditAssetModel model,byte[] logo)
+        public (bool isEdit, string error) Edit(EditAssetModel model, byte[] logo)
         {
             bool isEdit = false;
             string error = null;
@@ -152,23 +152,24 @@ namespace Wallet.Core.Services
 
         public BuyAssetModel GetBuyInformationOfAsset(Guid assetId, string? userName)
             => _repo.All<Asset>()
-                .Where(a=>a.Id == assetId)
-                .Select(a=> new BuyAssetModel()
+                .Where(a => a.Id == assetId)
+                .Select(a => new BuyAssetModel()
                 {
                     AssetId = a.Id,
                     Name = a.Name,
                     Abbreviation = a.Abbreviation,
+                    CategoryName = a.Category.Name,
                     Value = a.Value,
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo),
                     UserBalance = _userService.GetUserBalance(userName)
                 })
                 .First();
 
-        public (bool isBuyed, string error) BuyAsset(BuyAssetModel model, string? username)
+        public (bool isBuyed, string error) BuyAsset(BuyAssetModel model, string username)
         {
             bool isBuyed = false;
             string error = String.Empty;
-            
+
             var asset = _repo.All<Asset>().FirstOrDefault(a => a.Id == model.AssetId);
             var user = _repo.All<User>().FirstOrDefault(a => a.UserName == username);
 
@@ -182,25 +183,28 @@ namespace Wallet.Core.Services
                 return (isBuyed, error = "Not enough money!");
             }
 
-            var userAssets = _repo.All<Infrastructure.Data.Models.Wallet>()
+            var userAsset = new UserAsset()
+            {
+                Name = model.Name,
+                Abbreviation = model.Abbreviation,
+                CategoryName = model.CategoryName,
+                BuyedPrice = model.Value,
+                Amount = model.Amount,
+                Quantity = model.Quantity
+            };
+
+            user.Wallet = _repo.All<Infrastructure.Data.Models.Wallet>()
                 .Where(w => w.User == user)
-                .Select(w => w.Assets)
                 .First();
 
-            if (!userAssets.Contains(asset))
-            {
-                userAssets.Add(asset);
-            }
+            user.Wallet.UserAssets.Add(userAsset);
 
-            user.Balance -= model.Amount;
-            asset.Amount += model.Amount;
-            asset.Quantity += model.Quantity;
-
-            var transaction = _transactionService.CreateBuyTransaction(user,model.Amount,model.Value);
+            var transaction = _transactionService.CreateBuyTransaction(user, model.Amount, model.Value);
             user.Transactions.Add(transaction);
 
             try
             {
+                _repo.Add<UserAsset>(userAsset);
                 _repo.Add<Transaction>(transaction);
                 _repo.SaveChanges();
                 isBuyed = true;
@@ -212,7 +216,6 @@ namespace Wallet.Core.Services
 
             return (isBuyed, error);
         }
-
 
         public bool Delete(Guid assetId)
         {

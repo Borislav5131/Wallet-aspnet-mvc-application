@@ -16,10 +16,9 @@ namespace Wallet.Infrastructure.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>()
+            builder.Entity<Models.User>()
                 .HasOne(u => u.Wallet)
-                .WithOne(w => w.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithOne(w => w.User);
         }
 
         public DbSet<Asset> Assets { get; set; }
@@ -29,5 +28,7 @@ namespace Wallet.Infrastructure.Data
         public DbSet<Models.Wallet> Wallets { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
+
+        public DbSet<UserAsset> UserAssets { get; set; }
     }
 }

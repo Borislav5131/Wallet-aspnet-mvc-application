@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using static Wallet.Infrastructure.Data.DataConstants.Wallet;
-
 namespace Wallet.Infrastructure.Data.Models
 {
     public class Wallet
@@ -13,12 +11,10 @@ namespace Wallet.Infrastructure.Data.Models
         [Required]
         public string UserId { get; set; }
 
+        [Required]
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
-        [Range(WalletTotalAmountMinValue,WalletTotalAmountMaxValue)]
-        public decimal TotalValue { get; set; }
-
-        public List<Asset> Assets { get; set; } = new List<Asset>();
+        public List<UserAsset> UserAssets { get; set; } = new List<UserAsset>();
     }
 }

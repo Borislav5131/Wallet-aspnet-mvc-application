@@ -10,6 +10,7 @@ namespace Wallet.Core.ViewModels.Asset
         public decimal UserBalance { get; set; }
 
         public string Name { get; set; }
+        public string CategoryName { get; set; }
 
         public string Abbreviation { get; set; }
 

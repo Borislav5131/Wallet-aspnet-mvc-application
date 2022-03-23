@@ -1,4 +1,5 @@
 ﻿using Wallet.Core.ViewModels.Asset;
+using Wallet.Core.ViewModels.UserAsset;
 
 namespace Wallet.Core.Contracts
 {

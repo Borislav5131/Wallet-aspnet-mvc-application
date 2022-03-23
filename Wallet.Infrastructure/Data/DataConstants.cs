@@ -23,6 +23,22 @@
             public const double AssetMinQuantity = 0;
             public const int AssetMaxLogoSize = 2 * 1024 * 1024;
         }
+
+        public class UserAsset
+        {
+            public const int UserAssetMaxNameLenght = 30;
+            public const int UserAssetMinNameLenght = 3;
+            public const int UserAssetMaxAbbreviationLenght = 10;
+            public const int UserAssetMinAbbreviationLenght = 2;
+            public const double UserAssetMaxValue = 100000;
+            public const double UserAssetMinValue = 0;
+            public const double UserAssetMaxAmount = 100000;
+            public const double UserAssetMinAmount = 10;
+            public const double UserAssetMaxQuantity = 1000;
+            public const double UserAssetMinQuantity = 0;
+            public const int UserAssetCategoryMaxNameLenght = 30;
+            public const int UserAssetCategoryMinNameLenght = 3;
+        }
         
         public class Category
         {
@@ -34,8 +50,7 @@
        
         public class Wallet
         {
-            public const double WalletTotalAmountMaxValue = double.MaxValue;
-            public const double WalletTotalAmountMinValue = 0;
+            
         }
 
         public class Transaction

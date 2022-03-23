@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using Wallet.Core.Contracts;
+using Wallet.Core.Constants;
 using Wallet.Infrastructure.Data.Models;
-using Wallet = Wallet.Infrastructure.Data.Models.Wallet;
 
 namespace Wallet.Areas.Identity.Pages.Account
 {
@@ -14,18 +13,15 @@ namespace Wallet.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly INotyfService _notyf;
-        private readonly IUserService _userService;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            INotyfService notyf,
-            IUserService userService)
+            INotyfService notyf)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _notyf = notyf;
-            _userService = userService;
         }
 
         [BindProperty]
@@ -69,21 +65,19 @@ namespace Wallet.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                var wallet = new Infrastructure.Data.Models.Wallet();
+
                 var user = new User
                 {
                     UserName = Input.UserName,
                     Email = Input.Email,
                     Image = ConvertImageToBytes(image),
+                    Wallet = wallet,
+                    WalletId = wallet.Id
                 };
 
-                var wallet = new Infrastructure.Data.Models.Wallet()
-                {
-                    User = user,
-                    UserId = user.Id
-                };
-
-                user.Wallet = wallet;
-                user.WalletId = wallet.Id;
+                wallet.User = user;
+                wallet.UserId = user.Id;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

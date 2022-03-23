@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wallet.Infrastructure.Data;
 
 #nullable disable
 
-namespace Wallet.Infrastructure.Data.Migrations
+namespace Wallet.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    [Migration("20220320102907_AddTransactionTable")]
-    partial class AddTransactionTable
+    partial class WalletDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,17 +186,15 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("Value")
+                    b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("WalletId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("WalletId");
 
                     b.ToTable("Assets");
                 });
@@ -275,6 +271,11 @@ namespace Wallet.Infrastructure.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasMaxLength(2097152)
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -308,6 +309,10 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<Guid?>("WalletId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -318,7 +323,50 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("WalletId")
+                        .IsUnique();
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.UserAsset", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("BuyedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("UserAssets");
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
@@ -327,17 +375,11 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("TotalValue")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Wallets");
                 });
@@ -401,10 +443,6 @@ namespace Wallet.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", null)
-                        .WithMany("Assets")
-                        .HasForeignKey("WalletId");
-
                     b.Navigation("Category");
                 });
 
@@ -419,15 +457,22 @@ namespace Wallet.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
+            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
                 {
-                    b.HasOne("Wallet.Infrastructure.Data.Models.User", "User")
-                        .WithOne("Wallet")
-                        .HasForeignKey("Wallet.Infrastructure.Data.Models.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", "Wallet")
+                        .WithOne("User")
+                        .HasForeignKey("Wallet.Infrastructure.Data.Models.User", "WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.UserAsset", b =>
+                {
+                    b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", null)
+                        .WithMany("UserAssets")
+                        .HasForeignKey("WalletId");
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Category", b =>
@@ -438,14 +483,14 @@ namespace Wallet.Infrastructure.Data.Migrations
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
                 {
                     b.Navigation("Transactions");
-
-                    b.Navigation("Wallet")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
                 {
-                    b.Navigation("Assets");
+                    b.Navigation("User")
+                        .IsRequired();
+
+                    b.Navigation("UserAssets");
                 });
 #pragma warning restore 612, 618
         }
