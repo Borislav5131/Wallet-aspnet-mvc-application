@@ -21,6 +21,7 @@ namespace Wallet.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> CreateRole()
         {
             //await _roleManager.CreateAsync(new IdentityRole()
@@ -31,6 +32,7 @@ namespace Wallet.Areas.Admin.Controllers
             return Ok();
         }
 
+        [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {
             var users = await _userService.GetUsers();
