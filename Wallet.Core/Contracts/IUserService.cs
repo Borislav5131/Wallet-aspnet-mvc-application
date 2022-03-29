@@ -9,5 +9,9 @@ namespace Wallet.Core.Contracts
         User? GetUserByName(string user);
         UserViewModel GetUserInformation(string username);
         decimal GetUserBalance(string? userName);
+        bool Delete(string userId);
+        User? GetUserById(string userId);
+        EditUserModel GetDetailsOfUser(string userId);
+        Task<(bool isEdit, string error)> Edit(EditUserModel model, byte[]? convertedLogo);
     }
 }

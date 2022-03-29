@@ -21,6 +21,7 @@ namespace Wallet.Core.Services
                 .OrderBy(a=>a.Quantity)
                 .Select(a => new UserAssetViewModel()
                 {
+                    Id = a.Id,
                     Name = a.Name,
                     Abbreviation = a.Abbreviation,
                     Category = a.CategoryName,

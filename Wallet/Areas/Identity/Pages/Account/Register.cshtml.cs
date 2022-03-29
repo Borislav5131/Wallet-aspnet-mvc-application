@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using Wallet.Core.Constants;
 using Wallet.Infrastructure.Data.Models;
+using static Wallet.Infrastructure.Data.DataConstants.User;
 
 namespace Wallet.Areas.Identity.Pages.Account
 {
@@ -32,7 +32,7 @@ namespace Wallet.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+            [StringLength(UserNameMaxLenght, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = UserNameMinLenght)]
             [Display(Name = "Username")]
             public string UserName { get; set; }
 
@@ -42,7 +42,7 @@ namespace Wallet.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(PasswordMaxLenght, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = PasswordMinLenght)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
