@@ -19,6 +19,19 @@ namespace Wallet.Core.Services
             _userService = userService;
             _transactionService = transactionService;
         }
+
+        public List<AllAssetViewModel> GetAllAssets()
+            => _repo.All<Asset>()
+                .Select(a => new AllAssetViewModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    Price = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+                })
+                .ToList();
+
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
             => _repo.All<Asset>()
                 .Where(a => a.Category.Id == categoryId)
@@ -216,6 +229,8 @@ namespace Wallet.Core.Services
 
             return (isBuyed, error);
         }
+
+        
 
         public bool Delete(Guid assetId)
         {

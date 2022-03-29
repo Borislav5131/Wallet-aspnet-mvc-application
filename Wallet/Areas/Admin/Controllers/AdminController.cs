@@ -14,6 +14,8 @@ namespace Wallet.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IUserAssetService _userAssetService;
         private readonly ITransactionService _transactionService;
+        private readonly ICategoryService _categoryService;
+        private readonly IAssetService _assetService;
         private readonly INotyfService _notyf;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -23,7 +25,9 @@ namespace Wallet.Areas.Admin.Controllers
             RoleManager<IdentityRole> roleManager, 
             INotyfService notyf,
             IUserAssetService userAssetService,
-            ITransactionService transactionService)
+            ITransactionService transactionService,
+            ICategoryService categoryService,
+            IAssetService assetService)
         {
             _userManager = userManager;
             _userService = userService;
@@ -31,6 +35,8 @@ namespace Wallet.Areas.Admin.Controllers
             _notyf = notyf;
             _userAssetService = userAssetService;
             _transactionService = transactionService;
+            _categoryService = categoryService;
+            _assetService = assetService;
         }
 
         [HttpGet]
@@ -133,6 +139,22 @@ namespace Wallet.Areas.Admin.Controllers
             var userTransactions = _transactionService.GetUserTransactions(user.UserName);
 
             return View(userTransactions);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageCategories()
+        {
+            var categories = _categoryService.GetAllCategories();
+
+            return View(categories);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageAssets()
+        {
+            var assets = _assetService.GetAllAssets();
+
+            return View(assets);
         }
 
         private byte[] ConvertLogoToBytes(IFormFile logo)
