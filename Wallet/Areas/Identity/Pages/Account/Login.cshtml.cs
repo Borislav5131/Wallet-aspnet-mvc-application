@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Areas.Identity.Pages.Account
@@ -11,13 +12,16 @@ namespace Wallet.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly INotyfService _notyf;
 
         public LoginModel(SignInManager<User> signInManager,
-            INotyfService notyf)
+            INotyfService notyf,
+            UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _notyf = notyf;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -32,7 +36,7 @@ namespace Wallet.Areas.Identity.Pages.Account
         {
             [Required]
             [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
-            [Display(Name = "Username")]
+            [Display(Name = "Username / Email")]
             public string UserName { get; set; }
 
             [Required]
@@ -63,7 +67,19 @@ namespace Wallet.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var userName = Input.UserName;
+
+                if (IsValidEmail(Input.UserName))
+                {
+                    var user = await _userManager.FindByEmailAsync(Input.UserName);
+
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+                    }
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
@@ -83,6 +99,19 @@ namespace Wallet.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }
