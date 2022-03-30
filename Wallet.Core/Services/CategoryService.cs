@@ -1,18 +1,24 @@
-﻿using Wallet.Core.Constants;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Asset;
 using Wallet.Core.ViewModels.Category;
 using Wallet.Infrastructure.Data.Models;
+
+using static Wallet.Core.Constants.CacheConstants;
 
 namespace Wallet.Core.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly IRepository _repo;
+        private readonly IMemoryCache _cache;
 
-        public CategoryService(IRepository repo)
+        public CategoryService(IRepository repo, 
+            IMemoryCache cache)
         {
             this._repo = repo;
+            _cache = cache;
         }
 
         public (bool added, string error) Create(CreateCategoryFormModel model)
@@ -47,14 +53,26 @@ namespace Wallet.Core.Services
 
         public List<AllCategoryViewModel> GetAllCategories()
         {
-            return _repo.All<Category>()
-                .Select(c => new AllCategoryViewModel()
-                {
-                    CategoryId = c.Id,
-                    Name = c.Name,
-                    Description = c.Description,
-                })
-                .ToList();
+            var allCategories = _cache.Get<List<AllCategoryViewModel>>(AllCategoriesCacheKey);
+
+            if (allCategories == null)
+            {
+                allCategories = _repo.All<Category>()
+                    .Select(c => new AllCategoryViewModel()
+                    {
+                        CategoryId = c.Id,
+                        Name = c.Name,
+                        Description = c.Description,
+                    })
+                    .ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+                _cache.Set(AllCategoriesCacheKey, allCategories, cacheOptions);
+            }
+
+            return allCategories;
         }
 
         public EditCategoryModel GetDetailsOfCategory(Guid categoryId)

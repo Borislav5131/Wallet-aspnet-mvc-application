@@ -1,7 +1,10 @@
-﻿using Wallet.Core.Constants;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Asset;
 using Wallet.Infrastructure.Data.Models;
+
+using static Wallet.Core.Constants.CacheConstants;
 
 namespace Wallet.Core.Services
 {
@@ -10,14 +13,17 @@ namespace Wallet.Core.Services
         private readonly IRepository _repo;
         private readonly IUserService _userService;
         private readonly ITransactionService _transactionService;
+        private readonly IMemoryCache _cache;
 
         public AssetService(IRepository repo,
             IUserService userService,
-            ITransactionService transactionService)
+            ITransactionService transactionService,
+            IMemoryCache cache)
         {
             _repo = repo;
             _userService = userService;
             _transactionService = transactionService;
+            _cache = cache;
         }
 
         public List<AllAssetViewModel> GetAllAssets()
@@ -33,17 +39,31 @@ namespace Wallet.Core.Services
                 .ToList();
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
-            => _repo.All<Asset>()
-                .Where(a => a.Category.Id == categoryId)
-                .Select(a => new AllAssetViewModel()
-                {
-                    AssetId = a.Id,
-                    Name = a.Name,
-                    Abbreviation = a.Abbreviation,
-                    Price = a.Value,
-                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
-                })
-                .ToList();
+        {
+            var allAssetsInCategory = _cache.Get<List<AllAssetViewModel>>(AllAssetsInCategoryCacheKey);
+
+            if (allAssetsInCategory == null)
+            {
+                allAssetsInCategory = _repo.All<Asset>()
+                    .Where(a => a.Category.Id == categoryId)
+                    .Select(a => new AllAssetViewModel()
+                    {
+                        AssetId = a.Id,
+                        Name = a.Name,
+                        Abbreviation = a.Abbreviation,
+                        Price = a.Value,
+                        Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+                    })
+                    .ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+                _cache.Set(AllAssetsInCategoryCacheKey, allAssetsInCategory, cacheOptions);
+            }
+
+            return allAssetsInCategory;
+        }
 
         public (bool added, string error) Create(CreateAssetModel model, byte[] logo)
         {
