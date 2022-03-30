@@ -15,6 +15,9 @@
             <div class="container-fluid">
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item ps-2 pe-2">
+                            <a type="button" class="fa fa-user bg-light" aria-hidden="true" style="font-size: 2rem" asp-area="Admin" asp-controller="Home" asp-action="Index"></a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Admin" asp-action="ManageUsers">Users</a>
                         </li>
@@ -26,8 +29,8 @@
                         </li>
                     </ul>
                     <ul class="nav justify-content-end">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quit</a>
+                        <li class="nav-item pe-3">
+                            <a class="nav-link text-dark btn-close" asp-area="" asp-controller="Home" asp-action="Index"></a>
                         </li>
                     </ul>
                 </div>

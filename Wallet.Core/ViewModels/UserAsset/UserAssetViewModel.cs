@@ -1,4 +1,6 @@
-﻿namespace Wallet.Core.ViewModels.UserAsset
+﻿using System.Dynamic;
+
+namespace Wallet.Core.ViewModels.UserAsset
 {
     public class UserAssetViewModel
     {
@@ -9,5 +11,6 @@
         public decimal BuyedPrice { get; set; }
         public decimal Amount { get; set; }
         public decimal Quantity { get; set; }
+        public string Logo { get; set; }
     }
 }

@@ -42,6 +42,7 @@
             public const double UserAssetMinQuantity = 0;
             public const int UserAssetCategoryMaxNameLenght = 30;
             public const int UserAssetCategoryMinNameLenght = 3;
+            public const int UserAssetMaxLogoSize = 2 * 1024 * 1024;
         }
         
         public class Category

@@ -52,7 +52,6 @@ namespace Wallet.Core.Services
                 })
                 .FirstOrDefault();
 
-
         public UserViewModel? GetUserInformation(string username)
             => _repo.All<User>()
                 .Where(u => u.UserName == username)

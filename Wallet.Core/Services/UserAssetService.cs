@@ -1,16 +1,20 @@
 ﻿using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.UserAsset;
+using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Services
 {
     public class UserAssetService : IUserAssetService
     {
         private readonly IRepository _repo;
+        private readonly ITransactionService _transactionService;
 
-        public UserAssetService(IRepository repo)
+        public UserAssetService(IRepository repo,
+            ITransactionService transactionService)
         {
             _repo = repo;
+            _transactionService = transactionService;
         }
 
         public IEnumerable<UserAssetViewModel> GetUserAssetsInformation(string identityName)
@@ -27,7 +31,50 @@ namespace Wallet.Core.Services
                     Category = a.CategoryName,
                     BuyedPrice = a.BuyedPrice,
                     Amount = a.Amount,
-                    Quantity = a.Quantity
+                    Quantity = a.Quantity,
+                    Logo = a.Logo
                 });
+
+        public (bool isSelled, string error) Sell(Guid userAssetId, string identityName)
+        {
+            bool isSelled = false;
+            string error = String.Empty;
+
+            var user = _repo.All<User>()
+                .FirstOrDefault(u => u.UserName == identityName);
+            var userAsset = _repo.All<UserAsset>()
+                .FirstOrDefault(ua => ua.Id == userAssetId);
+            var asset = _repo.All<Asset>()
+                .FirstOrDefault(a => a.Name == userAsset.Name && a.Abbreviation == userAsset.Abbreviation);
+
+            if (user == null || userAsset == null || asset == null)
+            {
+                return (isSelled, error = "Not found!");
+            }
+
+            var wallet = _repo.All<Infrastructure.Data.Models.Wallet>()
+                .Where(w => w.User == user)
+                .First();
+
+            wallet.UserAssets.Remove(userAsset);
+            user.Balance += userAsset.Quantity * asset.Value;
+
+            var transaction = _transactionService.CreateSellTransaction(user, userAsset.Amount, asset.Value);
+            user.Transactions.Add(transaction);
+
+            try
+            {
+                _repo.Remove<UserAsset>(userAsset);
+                _repo.Add<Transaction>(transaction);
+                _repo.SaveChanges();
+                isSelled = true;
+            }
+            catch (Exception)
+            {
+                error = "Could not save!";
+            }
+
+            return (isSelled, error);
+        }
     }
 }

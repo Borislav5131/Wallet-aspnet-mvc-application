@@ -223,7 +223,8 @@ namespace Wallet.Core.Services
                 CategoryName = model.CategoryName,
                 BuyedPrice = model.Value,
                 Amount = model.Amount,
-                Quantity = model.Quantity
+                Quantity = model.Quantity,
+                Logo = model.Logo
             };
 
             user.Wallet = _repo.All<Infrastructure.Data.Models.Wallet>()
@@ -231,6 +232,7 @@ namespace Wallet.Core.Services
                 .First();
 
             user.Wallet.UserAssets.Add(userAsset);
+            user.Balance -= userAsset.Amount;
 
             var transaction = _transactionService.CreateBuyTransaction(user, model.Amount, model.Value);
             user.Transactions.Add(transaction);
@@ -249,8 +251,6 @@ namespace Wallet.Core.Services
 
             return (isBuyed, error);
         }
-
-        
 
         public bool Delete(Guid assetId)
         {

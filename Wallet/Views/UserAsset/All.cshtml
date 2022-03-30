@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Wallet.Core.ViewModels.UserAsset.UserAssetViewModel>
+
+<div class="row">
+    @foreach (var userAsset in Model)
+    {
+        <div class="col-md-3">
+            <div class="card border-success mb-4" style="max-width: 18rem">
+                <div class="card-header bg-transparent border-success text-dark">
+                    <img src="@userAsset.Logo" class="w-25 h-25" />
+                    @userAsset.Abbreviation
+                </div>
+                <div class="card-body text-success">
+                    <h3 class="card-title">@userAsset.Name</h3>
+                    <h5 class="card-text">Purchased price: $@userAsset.BuyedPrice</h5>
+                    <h5 class="card-text">Amount: $@userAsset.Amount</h5>
+                    <h5 class="card-text">Quantity: @userAsset.Quantity</h5>
+                </div>
+                <div class="card-footer bg-transparent border-success">
+                    <a role="button" class="btn btn-outline-danger" asp-controller="UserAsset" asp-action="Sell" asp-route-userAssetId="@userAsset.Id">Sell</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

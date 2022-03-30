@@ -11,7 +11,10 @@
     <h1>@Model.UserViewModel.Username</h1>
     <p class="title">@Model.UserViewModel.Email</p>
     <p class="text-dark" style="font-size: 2rem">Balance: $@Model.UserViewModel.Balance</p>
-    <p><button class="cardbtn">Contact</button></p>
+    <p>
+        <a type="button" asp-controller="Category" asp-action="All" class="btn btn-outline-success">Buy</a>
+        <a type="button" asp-controller="UserAsset" asp-action="All" class="btn btn-outline-info">Your assets</a>
+    </p>
 </div>
 
 <!-- User assets -->
@@ -30,26 +33,26 @@
             </tr>
         </thead>
         <tbody>
-        @if (Model.UserAssetsViewModel == null)
-        {
-            <tr>
-                No UserAssets
-            </tr>
-        }
-        @if (Model.UserAssetsViewModel != null)
-        {
-            @foreach (var asset in @Model.UserAssetsViewModel)
+            @if (Model.UserAssetsViewModel == null)
             {
                 <tr>
-                    <th scope="row">@asset.Abbreviation</th>
-                    <td>@asset.Name</td>
-                    <td>@asset.Category</td>
-                    <td>$@asset.BuyedPrice</td>
-                    <td>$@asset.Amount</td>
-                    <td>@asset.Quantity</td>
+                    No UserAssets
                 </tr>
             }
-        }
+            @if (Model.UserAssetsViewModel != null)
+            {
+                @foreach (var asset in @Model.UserAssetsViewModel)
+                {
+                    <tr>
+                        <th scope="row">@asset.Abbreviation</th>
+                        <td>@asset.Name</td>
+                        <td>@asset.Category</td>
+                        <td>$@asset.BuyedPrice</td>
+                        <td>$@asset.Amount</td>
+                        <td>@asset.Quantity</td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>

@@ -31,6 +31,8 @@ builder.Services.AddDefaultIdentity<User>(options =>
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<WalletDbContext>();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {

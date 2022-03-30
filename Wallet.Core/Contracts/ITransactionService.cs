@@ -10,5 +10,6 @@ namespace Wallet.Core.Contracts
         WithdrawModel GetUserWithdrawModel(string user);
         List<UserTransactionsViewModel> GetUserTransactions(string username);
         Transaction CreateBuyTransaction(User user,decimal amount, decimal value);
+        Transaction CreateSellTransaction(User user, decimal amount, decimal value);
     }
 }
