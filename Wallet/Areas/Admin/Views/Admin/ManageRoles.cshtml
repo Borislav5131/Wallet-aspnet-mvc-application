@@ -1,0 +1,25 @@
+﻿@model Wallet.Core.ViewModels.User.UserRolesViewModel
+
+@{
+    ViewData["Title"] = "Manage roles";
+    var items = (List<SelectListItem>)ViewBag.RoleItems;
+}
+
+<div class="row justify-content-center">
+    <h4 class="text-center">Manage roles of @Model.Username </h4>
+    <hr />
+    <div class="col-md-4">
+        <form asp-action="ManageRoles">
+            <input type="hidden" name="UserId" value="@Model.UserId"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select asp-for="RoleNames" asp-items="items" class="w-100 h-25" multiple>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary mt-2 mb-2"/>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.User;
@@ -22,7 +24,7 @@ namespace Wallet.Areas.Admin.Controllers
 
         public AdminController(UserManager<User> userManager,
             IUserService userService,
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<IdentityRole> roleManager,
             INotyfService notyf,
             IUserAssetService userAssetService,
             ITransactionService transactionService,
@@ -48,6 +50,51 @@ namespace Wallet.Areas.Admin.Controllers
             //});
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageRoles(string userId)
+        {
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
+
+            var model = new UserRolesViewModel()
+            {
+                UserId = user.Id,
+                Username = user.UserName
+            };
+
+            ViewBag.RoleItems = _roleManager.Roles
+                .ToList()
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Name,
+                    Selected = _userManager.IsInRoleAsync(user, r.Name).Result
+                })
+                .ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageRoles(UserRolesViewModel model)
+        {
+            var user = _userService.GetUserById(model.UserId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+            if (model.RoleNames?.Length > 0)
+            {
+                await _userManager.AddToRolesAsync(user, model.RoleNames);
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
         }
 
         [HttpGet]

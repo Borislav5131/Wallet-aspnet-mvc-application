@@ -40,6 +40,7 @@
             <td>
                 @Html.ActionLink("User Assets", "ManageUserAssets",new { userId=item.Id }) |
                 @Html.ActionLink("Transactions", "ManageUserTransactions", new { userId=item.Id }) |
+                @Html.ActionLink("Roles", "ManageRoles", new { userId=item.Id }) |
                 @Html.ActionLink("Edit", "EditUser", new {  userId=item.Id }) |
                 @Html.ActionLink("Delete", "DeleteUser", new { userId = item.Id })
             </td>
