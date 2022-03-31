@@ -21,6 +21,10 @@ namespace Wallet.Core.Services
             _cache = cache;
         }
 
+        public Category? GetCategoryById(Guid categoryId)
+            => _repo.All<Category>()
+                .FirstOrDefault(c => c.Id == categoryId);
+
         public (bool added, string error) Create(CreateCategoryFormModel model)
         {
             bool added = false;
@@ -50,6 +54,76 @@ namespace Wallet.Core.Services
             
             return (added, error);
         }
+
+        public (bool isEdit, string error) Edit(EditCategoryModel model)
+        {
+            bool isEdit = false;
+            string error = null;
+
+            var category = GetCategoryById(model.CategoryId);
+
+            if (category == null)
+            {
+                return (isEdit, error = "Invalid operation");
+            }
+
+            category.Name = model.Name;
+            category.Description = model.Description;
+
+            try
+            {
+                _repo.SaveChanges();
+                isEdit = true;
+            }
+            catch (Exception)
+            {
+                error = "Invalid operation!";
+            }
+
+            return (isEdit, error);
+        }
+
+        public bool Delete(Guid categoryId)
+        {
+            var category = GetCategoryById(categoryId);
+
+            if (category == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                category.Assets.Clear();
+                _repo.Remove<Category>(category);
+                _repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public string GetCategoryName(Guid categoryId)
+        {
+            var category = GetCategoryById(categoryId);
+
+            if (category == null)
+            {
+                return null;
+            }
+
+            return category.Name;
+        }
+
+        public CreateAssetModel AssetCreateFormModel(Guid categoryId)
+            => new CreateAssetModel()
+            {
+                CategoryId = categoryId,
+                CategoryName = GetCategoryName(categoryId)
+            };
 
         public List<AllCategoryViewModel> GetAllCategories()
         {
@@ -85,78 +159,5 @@ namespace Wallet.Core.Services
                     Description = c.Description
                 })
                 .First();
-
-        public (bool isEdit, string error) Edit(EditCategoryModel model)
-        {
-            bool isEdit = false;
-            string error = null;
-
-            var category = _repo.All<Category>()
-                .FirstOrDefault(c => c.Id == model.CategoryId);
-
-            if (category == null)
-            {
-                return (isEdit, error = "Invalid operation");
-            }
-
-            category.Name = model.Name;
-            category.Description = model.Description;
-
-            try
-            {
-                _repo.SaveChanges();
-                isEdit = true;
-            }
-            catch (Exception)
-            {
-                error = "Invalid operation!";
-            }
-
-            return (isEdit, error);
-        }
-
-        public bool Delete(Guid categoryId)
-        {
-            var category = _repo.All<Category>()
-                .FirstOrDefault(c => c.Id == categoryId);
-
-            if (category == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                category.Assets.Clear();
-                _repo.Remove<Category>(category);
-                _repo.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public string GetCategoryName(Guid categoryId)
-        {
-            var category = _repo.All<Category>()
-                .FirstOrDefault(c => c.Id == categoryId);
-
-            if (category == null)
-            {
-                return null;
-            }
-
-            return category.Name;
-        }
-
-        public CreateAssetModel AssetCreateFormModel(Guid categoryId)
-            => new CreateAssetModel()
-            {
-                CategoryId = categoryId,
-                CategoryName = GetCategoryName(categoryId)
-            };
     }
 }

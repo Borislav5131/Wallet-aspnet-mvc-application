@@ -63,7 +63,7 @@ namespace Wallet.Core.Services
 
             return new WithdrawModel()
             {
-                UserBalance = user.Balance
+                UserBalance = user.Wallet.Balance
             };
         }
 
@@ -89,8 +89,8 @@ namespace Wallet.Core.Services
 
             try
             {
-                user.Balance += model.Value;
-                user.Transactions.Add(transaction);
+                user.Wallet.Balance += model.Value;
+                user.Wallet.Transactions.Add(transaction);
                 _repo.Add<Transaction>(transaction);
                 _repo.SaveChanges();
                 isDeposit = true;
@@ -110,7 +110,7 @@ namespace Wallet.Core.Services
 
             var user = _userService.GetUserByName(identityName);
 
-            if (user == null || user.Balance - model.Value < 0)
+            if (user == null || user.Wallet.Balance - model.Value < 0)
             {
                 return (isDeposit, error = "The transaction cannot be completed!");
             }
@@ -125,8 +125,8 @@ namespace Wallet.Core.Services
 
             try
             {
-                user.Balance -= model.Value;
-                user.Transactions.Add(transaction);
+                user.Wallet.Balance -= model.Value;
+                user.Wallet.Transactions.Add(transaction);
                 _repo.Add<Transaction>(transaction);
                 _repo.SaveChanges();
                 isDeposit = true;

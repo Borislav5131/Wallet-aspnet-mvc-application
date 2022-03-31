@@ -21,22 +21,25 @@ namespace Wallet.Core.Services
 
         public async Task<IEnumerable<UserListViewModel>> GetUsers()
             => await _repo.All<User>()
+                .Include(u => u.Wallet)
                 .Select(u => new UserListViewModel()
                 {
                     Id = u.Id,
                     UserName = u.UserName,
                     Email = u.Email,
-                    Balance = u.Balance.ToString("F2"),
+                    Balance = u.Wallet.Balance.ToString("F2"),
                     PhoneNumber = u.PhoneNumber,
                 })
                 .ToListAsync();
 
         public User? GetUserByName(string user)
             => _repo.All<User>()
+                .Include(u => u.Wallet)
                 .FirstOrDefault(u => u.UserName == user);
 
         public User? GetUserById(string userId)
             => _repo.All<User>()
+                .Include(u=>u.Wallet)
                 .FirstOrDefault(u => u.Id == userId);
 
         public EditUserModel? GetDetailsOfUser(string userId)
@@ -54,26 +57,27 @@ namespace Wallet.Core.Services
 
         public UserViewModel? GetUserInformation(string username)
             => _repo.All<User>()
+                .Include(u => u.Wallet)
                 .Where(u => u.UserName == username)
                 .Select(u => new UserViewModel()
                 {
                     Username = u.UserName,
                     Email = u.Email,
-                    Balance = u.Balance,
+                    Balance = u.Wallet.Balance,
                     Image = $"data:image;base64,{Convert.ToBase64String(u.Image)}"
                 })
                 .FirstOrDefault();
 
         public decimal GetUserBalance(string? userName)
             => _repo.All<User>()
+                .Include(u => u.Wallet)
                 .Where(u => u.UserName == userName)
-                .Select(u => u.Balance)
+                .Select(u => u.Wallet.Balance)
                 .First();
 
         public bool Delete(string userId)
         {
-            var user = _repo.All<User>()
-                .FirstOrDefault(u => u.Id == userId);
+            var user = GetUserById(userId);
 
             if (user == null)
             {

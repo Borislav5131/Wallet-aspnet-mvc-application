@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wallet.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Wallet.Infrastructure.Data;
 namespace Wallet.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    partial class WalletDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220331092429_MoveTransactionsAndBalanceFromUserToWallet")]
+    partial class MoveTransactionsAndBalanceFromUserToWallet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,6 +307,10 @@ namespace Wallet.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<Guid?>("WalletId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -314,6 +320,9 @@ namespace Wallet.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("WalletId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -373,12 +382,9 @@ namespace Wallet.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Wallets");
                 });
@@ -460,6 +466,17 @@ namespace Wallet.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
+                {
+                    b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", "Wallet")
+                        .WithOne("User")
+                        .HasForeignKey("Wallet.Infrastructure.Data.Models.User", "WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.UserAsset", b =>
                 {
                     b.HasOne("Wallet.Infrastructure.Data.Models.Wallet", null)
@@ -467,31 +484,17 @@ namespace Wallet.Infrastructure.Migrations
                         .HasForeignKey("WalletId");
                 });
 
-            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
-                {
-                    b.HasOne("Wallet.Infrastructure.Data.Models.User", "User")
-                        .WithOne("Wallet")
-                        .HasForeignKey("Wallet.Infrastructure.Data.Models.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Category", b =>
                 {
                     b.Navigation("Assets");
                 });
 
-            modelBuilder.Entity("Wallet.Infrastructure.Data.Models.User", b =>
-                {
-                    b.Navigation("Wallet")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Wallet", b =>
                 {
                     b.Navigation("Transactions");
+
+                    b.Navigation("User")
+                        .IsRequired();
 
                     b.Navigation("UserAssets");
                 });

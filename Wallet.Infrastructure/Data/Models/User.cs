@@ -7,19 +7,19 @@ namespace Wallet.Infrastructure.Data.Models
 {
     public class User : IdentityUser
     {
-        [Range(UserBalanceMinValue, UserBalanceMaxValue)]
-        public decimal Balance { get; set; }
+        public User()
+        {
+            Wallet = new Wallet()
+            {
+                UserId = Id,
+            };
+        }
 
         [MaxLength(UserMaxImageSize)]
         public byte[] Image { get; set; }
 
         [Required]
-        public Guid? WalletId { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(WalletId))]
         public Wallet Wallet { get; set; }
 
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

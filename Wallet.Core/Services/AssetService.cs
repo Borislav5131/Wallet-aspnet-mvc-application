@@ -13,17 +13,20 @@ namespace Wallet.Core.Services
         private readonly IRepository _repo;
         private readonly IUserService _userService;
         private readonly ITransactionService _transactionService;
+        private readonly ICategoryService _categoryService;
         private readonly IMemoryCache _cache;
 
         public AssetService(IRepository repo,
             IUserService userService,
             ITransactionService transactionService,
-            IMemoryCache cache)
+            IMemoryCache cache, 
+            ICategoryService categoryService)
         {
             _repo = repo;
             _userService = userService;
             _transactionService = transactionService;
             _cache = cache;
+            _categoryService = categoryService;
         }
 
         public List<AllAssetViewModel> GetAllAssets()
@@ -37,6 +40,10 @@ namespace Wallet.Core.Services
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
                 })
                 .ToList();
+
+        public Asset? GetAssetById(Guid assetId)
+            => _repo.All<Asset>()
+                .FirstOrDefault(a => a.Id == assetId);
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
         {
@@ -80,7 +87,7 @@ namespace Wallet.Core.Services
                 return (added, error = "Logo must be max 2 MB");
             }
 
-            var category = _repo.All<Category>().FirstOrDefault(c => c.Name == model.CategoryName);
+            var category = _categoryService.GetCategoryById(model.CategoryId);
 
             if (category == null)
             {
@@ -113,30 +120,13 @@ namespace Wallet.Core.Services
             return (added, error);
         }
 
-        public EditAssetModel GetDetailsOfAsset(Guid assetId)
-            => _repo.All<Asset>()
-                .Where(a => a.Id == assetId)
-                .Select(a => new EditAssetModel()
-                {
-                    AssetId = a.Id,
-                    Name = a.Name,
-                    Abbreviation = a.Abbreviation,
-                    CategoryId = a.CategoryId,
-                    Category = a.Category.Name,
-                    Value = a.Value,
-                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
-                })
-                .First();
-
         public (bool isEdit, string error) Edit(EditAssetModel model, byte[] logo)
         {
             bool isEdit = false;
             string error = null;
 
-            var asset = _repo.All<Asset>()
-                .FirstOrDefault(a => a.Id == model.AssetId);
-            var category = _repo.All<Category>()
-                .FirstOrDefault(c => c.Id == model.CategoryId);
+            var asset = GetAssetById(model.AssetId);
+            var category = _categoryService.GetCategoryById(model.CategoryId);
 
             if (asset == null || category == null)
             {
@@ -183,28 +173,13 @@ namespace Wallet.Core.Services
             return (isEdit, error);
         }
 
-        public BuyAssetModel GetBuyInformationOfAsset(Guid assetId, string? userName)
-            => _repo.All<Asset>()
-                .Where(a => a.Id == assetId)
-                .Select(a => new BuyAssetModel()
-                {
-                    AssetId = a.Id,
-                    Name = a.Name,
-                    Abbreviation = a.Abbreviation,
-                    CategoryName = a.Category.Name,
-                    Value = a.Value,
-                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo),
-                    UserBalance = _userService.GetUserBalance(userName)
-                })
-                .First();
-
         public (bool isBuyed, string error) BuyAsset(BuyAssetModel model, string username)
         {
             bool isBuyed = false;
             string error = String.Empty;
 
-            var asset = _repo.All<Asset>().FirstOrDefault(a => a.Id == model.AssetId);
-            var user = _repo.All<User>().FirstOrDefault(a => a.UserName == username);
+            var asset = GetAssetById(model.AssetId);
+            var user = _userService.GetUserByName(username);
 
             if (asset == null || user == null)
             {
@@ -227,15 +202,11 @@ namespace Wallet.Core.Services
                 Logo = model.Logo
             };
 
-            user.Wallet = _repo.All<Infrastructure.Data.Models.Wallet>()
-                .Where(w => w.User == user)
-                .First();
-
             user.Wallet.UserAssets.Add(userAsset);
-            user.Balance -= userAsset.Amount;
+            user.Wallet.Balance -= userAsset.Amount;
 
             var transaction = _transactionService.CreateBuyTransaction(user, model.Amount, model.Value);
-            user.Transactions.Add(transaction);
+            user.Wallet.Transactions.Add(transaction);
 
             try
             {
@@ -254,12 +225,16 @@ namespace Wallet.Core.Services
 
         public bool Delete(Guid assetId)
         {
-            var asset = _repo.All<Asset>()
-                .FirstOrDefault(a => a.Id == assetId);
-            var category = _repo.All<Category>()
-                .FirstOrDefault(c => c.Id == asset.CategoryId);
+            var asset = GetAssetById(assetId);
 
-            if (asset == null || category == null)
+            if (asset == null)
+            {
+                return false;
+            }
+
+            var category = _categoryService.GetCategoryById(asset.CategoryId);
+
+            if (category == null)
             {
                 return false;
             }
@@ -277,5 +252,36 @@ namespace Wallet.Core.Services
 
             return true;
         }
+
+        public EditAssetModel GetDetailsOfAsset(Guid assetId)
+            => _repo.All<Asset>()
+                .Where(a => a.Id == assetId)
+                .Select(a => new EditAssetModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    CategoryId = a.CategoryId,
+                    Category = a.Category.Name,
+                    Value = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
+                })
+                .First();
+
+        public BuyAssetModel GetBuyInformationOfAsset(Guid assetId, string? userName)
+            => _repo.All<Asset>()
+                .Where(a => a.Id == assetId)
+                .Select(a => new BuyAssetModel()
+                {
+                    AssetId = a.Id,
+                    Name = a.Name,
+                    Abbreviation = a.Abbreviation,
+                    CategoryName = a.Category.Name,
+                    Value = a.Value,
+                    Logo = "data:image;base64," + Convert.ToBase64String(a.Logo),
+                    UserBalance = _userService.GetUserBalance(userName)
+                })
+                .First();
+
     }
 }

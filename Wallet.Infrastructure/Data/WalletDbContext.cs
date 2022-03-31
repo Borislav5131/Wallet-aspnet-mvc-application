@@ -18,7 +18,8 @@ namespace Wallet.Infrastructure.Data
 
             builder.Entity<Models.User>()
                 .HasOne(u => u.Wallet)
-                .WithOne(w => w.User);
+                .WithOne(w => w.User)
+                .HasForeignKey<Models.Wallet>(w=>w.UserId);
         }
 
         public DbSet<Asset> Assets { get; set; }

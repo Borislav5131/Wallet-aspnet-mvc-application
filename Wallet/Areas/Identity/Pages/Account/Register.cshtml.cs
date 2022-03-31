@@ -65,19 +65,12 @@ namespace Wallet.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var wallet = new Infrastructure.Data.Models.Wallet();
-
                 var user = new User
                 {
                     UserName = Input.UserName,
                     Email = Input.Email,
                     Image = ConvertImageToBytes(image),
-                    Wallet = wallet,
-                    WalletId = wallet.Id
                 };
-
-                wallet.User = user;
-                wallet.UserId = user.Id;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

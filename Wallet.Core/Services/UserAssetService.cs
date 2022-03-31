@@ -9,12 +9,15 @@ namespace Wallet.Core.Services
     {
         private readonly IRepository _repo;
         private readonly ITransactionService _transactionService;
+        private readonly IUserService _userService;
 
         public UserAssetService(IRepository repo,
-            ITransactionService transactionService)
+            ITransactionService transactionService,
+            IUserService userService)
         {
             _repo = repo;
             _transactionService = transactionService;
+            _userService = userService;
         }
 
         public IEnumerable<UserAssetViewModel> GetUserAssetsInformation(string identityName)
@@ -40,8 +43,7 @@ namespace Wallet.Core.Services
             bool isSelled = false;
             string error = String.Empty;
 
-            var user = _repo.All<User>()
-                .FirstOrDefault(u => u.UserName == identityName);
+            var user = _userService.GetUserByName(identityName);
             var userAsset = _repo.All<UserAsset>()
                 .FirstOrDefault(ua => ua.Id == userAssetId);
             var asset = _repo.All<Asset>()
@@ -52,15 +54,11 @@ namespace Wallet.Core.Services
                 return (isSelled, error = "Not found!");
             }
 
-            var wallet = _repo.All<Infrastructure.Data.Models.Wallet>()
-                .Where(w => w.User == user)
-                .First();
-
-            wallet.UserAssets.Remove(userAsset);
-            user.Balance += userAsset.Quantity * asset.Value;
+            user.Wallet.UserAssets.Remove(userAsset);
+            user.Wallet.Balance += userAsset.Quantity * asset.Value;
 
             var transaction = _transactionService.CreateSellTransaction(user, userAsset.Amount, asset.Value);
-            user.Transactions.Add(transaction);
+            user.Wallet.Transactions.Add(transaction);
 
             try
             {

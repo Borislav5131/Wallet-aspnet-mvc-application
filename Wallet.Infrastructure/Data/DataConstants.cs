@@ -8,8 +8,6 @@
             public const int UserNameMinLenght = 5;
             public const int PasswordMaxLenght = 100;
             public const int PasswordMinLenght = 6;
-            public const double UserBalanceMaxValue = double.MaxValue;
-            public const double UserBalanceMinValue = 0;
             public const int UserMaxImageSize = 2 * 1024 * 1024;
         }
         
@@ -55,7 +53,8 @@
        
         public class Wallet
         {
-            
+            public const double WalletBalanceMaxValue = double.MaxValue;
+            public const double WalletBalanceMinValue = 0;
         }
 
         public class Transaction

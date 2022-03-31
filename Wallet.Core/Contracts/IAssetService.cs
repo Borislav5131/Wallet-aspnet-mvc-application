@@ -1,10 +1,11 @@
 ﻿using Wallet.Core.ViewModels.Asset;
-using Wallet.Core.ViewModels.UserAsset;
+using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Contracts
 {
     public interface IAssetService
     {
+        Asset? GetAssetById(Guid assetId);
         List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId);
         (bool added, string error) Create(CreateAssetModel model,byte[] logo);
         bool Delete(Guid assetId);
