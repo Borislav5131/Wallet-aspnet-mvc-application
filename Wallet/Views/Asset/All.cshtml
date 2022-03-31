@@ -1,6 +1,10 @@
 ﻿@using static Wallet.Core.Constants.UserConstants.Roles
 @model IEnumerable<Wallet.Core.ViewModels.Asset.AllAssetViewModel>
 
+@{
+    ViewData["Title"] = "Assets";
+}
+
 <p>
     <h1 class="text-center">Assets in @ViewData["CategoryName"]</h1>
 </p>

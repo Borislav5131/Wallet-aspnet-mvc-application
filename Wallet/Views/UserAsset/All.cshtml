@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Wallet.Core.ViewModels.UserAsset.UserAssetViewModel>
 
+@{
+    ViewData["Title"] = "User assets";
+}
+
 <div class="row">
     @foreach (var userAsset in Model)
     {
