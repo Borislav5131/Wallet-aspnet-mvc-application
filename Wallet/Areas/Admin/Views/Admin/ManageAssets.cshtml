@@ -17,6 +17,9 @@
             @Html.DisplayNameFor(model => model.Abbreviation)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Price)
         </th>
 
@@ -33,6 +36,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Abbreviation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
         </td>
         <td>
             $@Html.DisplayFor(modelItem => item.Price)

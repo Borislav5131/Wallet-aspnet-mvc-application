@@ -36,6 +36,7 @@ namespace Wallet.Core.Services
                     AssetId = a.Id,
                     Name = a.Name,
                     Abbreviation = a.Abbreviation,
+                    Category = a.Category.Name,
                     Price = a.Value,
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
                 })
