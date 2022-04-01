@@ -9,19 +9,20 @@ namespace Wallet.Controllers
     public class HomeController : Controller
     {
         private readonly INotyfService _notyf;
-        private readonly ITransactionService _transactionService;
         private readonly IUserService _userService;
         private readonly IUserAssetService _userAssetService;
+        private readonly ITransactionService _transactionService;
 
-        public HomeController(INotyfService notyf,
-            ITransactionService transactionService,
+        public HomeController(
+            INotyfService notyf,
             IUserService userService,
-            IUserAssetService userAssetService)
+            IUserAssetService userAssetService,
+            ITransactionService transactionService)
         {
             _notyf = notyf;
-            _transactionService = transactionService;
             _userService = userService;
             _userAssetService = userAssetService;
+            _transactionService = transactionService;
         }
 
         public IActionResult Index()
@@ -30,9 +31,9 @@ namespace Wallet.Controllers
             {
                 var model = new HomeViewModel()
                 {
-                    UserTransactionsViewModel = _transactionService.GetUserTransactions(User.Identity.Name),
                     UserViewModel = _userService.GetUserInformation(User.Identity.Name),
-                    UserAssetsViewModel = _userAssetService.GetUserAssetsInformation(User.Identity.Name)
+                    UserAssetsViewModel = _userAssetService.GetUserAssetsInformation(User.Identity.Name),
+                    UserTransactionsViewModel = _transactionService.GetUserTransactions(User.Identity.Name),
                 };
 
                 return View("Home",model);

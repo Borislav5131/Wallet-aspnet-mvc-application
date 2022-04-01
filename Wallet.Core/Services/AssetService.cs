@@ -11,22 +11,23 @@ namespace Wallet.Core.Services
     public class AssetService : IAssetService
     {
         private readonly IRepository _repo;
-        private readonly IUserService _userService;
-        private readonly ITransactionService _transactionService;
-        private readonly ICategoryService _categoryService;
         private readonly IMemoryCache _cache;
+        private readonly IUserService _userService;
+        private readonly ICategoryService _categoryService;
+        private readonly ITransactionService _transactionService;
 
-        public AssetService(IRepository repo,
+        public AssetService(
+            IRepository repo,
+            IMemoryCache cache,
             IUserService userService,
-            ITransactionService transactionService,
-            IMemoryCache cache, 
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            ITransactionService transactionService)
         {
             _repo = repo;
-            _userService = userService;
-            _transactionService = transactionService;
             _cache = cache;
+            _userService = userService;
             _categoryService = categoryService;
+            _transactionService = transactionService;
         }
 
         public List<AllAssetViewModel> GetAllAssets()

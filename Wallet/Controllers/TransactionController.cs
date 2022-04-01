@@ -1,25 +1,26 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Transaction;
 
+
 namespace Wallet.Controllers
 {
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
     public class TransactionController : Controller
     {
-        private readonly ITransactionService _transactionService;
         private readonly INotyfService _notyf;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionController(ITransactionService transactionService,
-            INotyfService notyf)
+        public TransactionController(
+            INotyfService notyf,
+            ITransactionService transactionService)
         {
-            _transactionService = transactionService;
             _notyf = notyf;
+            _transactionService = transactionService;
         }
 
         [HttpGet]

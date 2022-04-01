@@ -8,14 +8,15 @@ namespace Wallet.Controllers
 
     public class UserAssetController : Controller
     {
-        private readonly IUserAssetService _userAssetService;
         private readonly INotyfService _notyf;
+        private readonly IUserAssetService _userAssetService;
 
-        public UserAssetController(IUserAssetService userAssetService,
-            INotyfService notyf)
+        public UserAssetController(
+            INotyfService notyf,
+            IUserAssetService userAssetService)
         {
-            _userAssetService = userAssetService;
             _notyf = notyf;
+            _userAssetService = userAssetService;
         }
 
         [HttpGet]

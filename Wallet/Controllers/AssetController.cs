@@ -13,15 +13,18 @@ namespace Wallet.Controllers
     [Authorize]
     public class AssetController : Controller
     {
+        private readonly INotyfService _notyf;
         private readonly IAssetService _assetService;
         private readonly ICategoryService _categoryService;
-        private readonly INotyfService _notyf;
 
-        public AssetController(IAssetService assetService, ICategoryService categoryService, INotyfService notyf)
+        public AssetController(
+            INotyfService notyf,
+            IAssetService assetService,
+            ICategoryService categoryService)
         {
+            _notyf = notyf;
             _assetService = assetService;
             _categoryService = categoryService;
-            _notyf = notyf;
         }
 
         [HttpGet]

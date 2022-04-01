@@ -64,5 +64,11 @@
             public const double TransactionMaxAmount = 100000;
             public const double TransactionMinAmount = 0;
         }
+
+        public class Role
+        {
+            public const int RoleMaxNameLenght = 20;
+            public const int RoleMinNameLenght = 0;
+        }
     }
 }

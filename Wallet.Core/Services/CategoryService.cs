@@ -17,7 +17,7 @@ namespace Wallet.Core.Services
         public CategoryService(IRepository repo, 
             IMemoryCache cache)
         {
-            this._repo = repo;
+            _repo = repo;
             _cache = cache;
         }
 

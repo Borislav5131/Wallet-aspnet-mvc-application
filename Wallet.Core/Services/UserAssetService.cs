@@ -8,16 +8,17 @@ namespace Wallet.Core.Services
     public class UserAssetService : IUserAssetService
     {
         private readonly IRepository _repo;
-        private readonly ITransactionService _transactionService;
         private readonly IUserService _userService;
+        private readonly ITransactionService _transactionService;
 
-        public UserAssetService(IRepository repo,
-            ITransactionService transactionService,
-            IUserService userService)
+        public UserAssetService(
+            IRepository repo,
+            IUserService userService,
+            ITransactionService transactionService)
         {
             _repo = repo;
-            _transactionService = transactionService;
             _userService = userService;
+            _transactionService = transactionService;
         }
 
         public IEnumerable<UserAssetViewModel> GetUserAssetsInformation(string identityName)

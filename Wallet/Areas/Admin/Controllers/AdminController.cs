@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
+using Wallet.Core.ViewModels.Role;
 using Wallet.Core.ViewModels.User;
 using Wallet.Infrastructure.Data.Models;
 
@@ -13,43 +13,95 @@ namespace Wallet.Areas.Admin.Controllers
 
     public class AdminController : BaseController
     {
-        private readonly IUserService _userService;
-        private readonly IUserAssetService _userAssetService;
-        private readonly ITransactionService _transactionService;
-        private readonly ICategoryService _categoryService;
-        private readonly IAssetService _assetService;
         private readonly INotyfService _notyf;
+        private readonly IUserService _userService;
+        private readonly IAssetService _assetService;
         private readonly UserManager<User> _userManager;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserAssetService _userAssetService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ITransactionService _transactionService;
 
-        public AdminController(UserManager<User> userManager,
-            IUserService userService,
-            RoleManager<IdentityRole> roleManager,
+        public AdminController(
             INotyfService notyf,
-            IUserAssetService userAssetService,
-            ITransactionService transactionService,
+            IUserService userService,
+            IAssetService assetService,
+            UserManager<User> userManager,
             ICategoryService categoryService,
-            IAssetService assetService)
+            IUserAssetService userAssetService,
+            RoleManager<IdentityRole> roleManager,
+            ITransactionService transactionService)
         {
-            _userManager = userManager;
-            _userService = userService;
-            _roleManager = roleManager;
             _notyf = notyf;
-            _userAssetService = userAssetService;
-            _transactionService = transactionService;
-            _categoryService = categoryService;
+            _userService = userService;
             _assetService = assetService;
+            _userManager = userManager;
+            _categoryService = categoryService;
+            _userAssetService = userAssetService;
+            _roleManager = roleManager;
+            _transactionService = transactionService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllRoles()
+        {
+            var model = _roleManager.Roles
+                .ToList()
+                .Select(r=> new AllRoleViewModel()
+                { 
+                    Id = r.Id, 
+                    Name = r.Name,
+                })
+                .ToList();
+
+            return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateRole()
-        {
-            //await _roleManager.CreateAsync(new IdentityRole()
-            //{
-            //    Name = "Administrator"
-            //});
+            => View();
 
-            return Ok();
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _roleManager.CreateAsync(new IdentityRole()
+            {
+                Name = model.Name
+            });
+
+            if (!result.Succeeded)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
+
+            _notyf.Success("Successfully create role.");
+            return RedirectToAction(nameof(AllRoles));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Something get wrong!" });
+            }
+
+            var result = await _roleManager.DeleteAsync(role);
+
+            if (!result.Succeeded)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Can't delete role!" });
+            }
+
+            _notyf.Success("Successfully delete role.");
+            return RedirectToAction(nameof(AllRoles));
         }
 
         [HttpGet]

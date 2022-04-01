@@ -8,11 +8,11 @@ namespace Wallet.Core.Contracts
     {
         Category? GetCategoryById(Guid categoryId);
         (bool added, string error) Create(CreateCategoryFormModel model);
-         List<AllCategoryViewModel> GetAllCategories();
-         bool Delete(Guid categoryId);
-         string GetCategoryName(Guid categoryId);
-         CreateAssetModel AssetCreateFormModel (Guid categoryId);
-         EditCategoryModel GetDetailsOfCategory(Guid categoryId);
-         (bool isEdit,string error) Edit(EditCategoryModel model);
+        (bool isEdit, string error) Edit(EditCategoryModel model);
+        bool Delete(Guid categoryId);
+        string GetCategoryName(Guid categoryId);
+        CreateAssetModel AssetCreateFormModel(Guid categoryId);
+        List<AllCategoryViewModel> GetAllCategories();
+        EditCategoryModel GetDetailsOfCategory(Guid categoryId);
     }
 }

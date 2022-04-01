@@ -38,11 +38,11 @@
                 @Html.DisplayFor(modelItem => item.Balance)
             </td>
             <td>
-                @Html.ActionLink("User Assets", "ManageUserAssets",new { userId=item.Id }) |
-                @Html.ActionLink("Transactions", "ManageUserTransactions", new { userId=item.Id }) |
-                @Html.ActionLink("Roles", "ManageRoles", new { userId=item.Id }) |
-                @Html.ActionLink("Edit", "EditUser", new {  userId=item.Id }) |
-                @Html.ActionLink("Delete", "DeleteUser", new { userId = item.Id })
+                <a type="button" class="btn btn-info" asp-controller="Admin" asp-action="ManageUserAssets" asp-route-userId="@item.Id">User Assets</a>
+                <a type="button" class="btn btn-info" asp-controller="Admin" asp-action="ManageUserTransactions" asp-route-userId="@item.Id">Transactions</a>
+                <a type="button" class="btn btn-info" asp-controller="Admin" asp-action="ManageRoles" asp-route-userId="@item.Id">Roles</a>
+                <a type="button" class="btn btn-warning" asp-controller="Admin" asp-action="EditUser" asp-route-userId="@item.Id">Edit</a>
+                <a type="button" class="btn btn-danger" asp-controller="Admin" asp-action="DeleteUser" asp-route-userId="@item.Id">Delete</a>
             </td>
         </tr>
 }

@@ -12,7 +12,8 @@ namespace Wallet.Core.Services
         private readonly IRepository _repo;
         private readonly UserManager<User> _userManager;
 
-        public UserService(IRepository repo,
+        public UserService(
+            IRepository repo,
             UserManager<User> userManager)
         {
             _repo = repo;

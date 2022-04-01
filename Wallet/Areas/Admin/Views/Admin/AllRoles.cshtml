@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Wallet.Core.ViewModels.Role.AllRoleViewModel>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<p class="text-center">
+    <a type="button" class="btn btn-outline-success" asp-action="CreateRole">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="float-end">
+                <a type="button" class="btn btn-outline-danger" asp-controller="Admin" asp-action="DeleteRole" asp-route-roleId="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

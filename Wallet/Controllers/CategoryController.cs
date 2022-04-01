@@ -12,13 +12,15 @@ namespace Wallet.Controllers
     [Authorize]
     public class CategoryController : Controller
     {
-        private readonly ICategoryService _categoryService;
         private readonly INotyfService _notyf;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(ICategoryService categoryService, INotyfService notyf)
+        public CategoryController(
+            INotyfService notyf,
+            ICategoryService categoryService)
         {
-            _categoryService = categoryService;
             _notyf = notyf;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
