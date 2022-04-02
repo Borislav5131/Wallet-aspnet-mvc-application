@@ -33,7 +33,10 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddControllersWithViews()
+builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    })
     .AddMvcOptions(options =>
     {
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
