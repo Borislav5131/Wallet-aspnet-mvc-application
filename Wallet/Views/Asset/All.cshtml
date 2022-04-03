@@ -16,27 +16,34 @@
 }
 <br />
 <div class="row">
-    @foreach (var item in Model)
+    @if (!Model.Any())
     {
-        <div class="col-md-3">
-            <div class="card border-success mb-4" style="max-width: 18rem">
-                <div class="card-header bg-transparent border-success text-dark">
-                    <img src="@item.Logo" class="w-25 h-25" />
-                    @item.Abbreviation
-                </div>
-                <div class="card-body text-success">
-                    <h5 class="card-title">@item.Name</h5>
-                    <h5 class="card-text">Price: $@item.Price</h5>
-                </div>
-                <div class="card-footer bg-transparent border-success">
-                    <a role="button" class="btn btn-outline-success" asp-action="Buy" asp-route-assetId="@item.AssetId">Buy</a>
-                    @if (User.IsInRole(Administrator))
-                    {
-                        <a role="button" class="btn btn-outline-info" asp-action="Edit" asp-route-assetId="@item.AssetId">Edit</a>
-                        <a role="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-assetId="@item.AssetId">Delete</a>
-                    }
+        <h4 class="text-center alert-danger">There aren't assets in this category!</h4>
+    }
+    @if (Model.Any())
+    {
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+                <div class="card border-success mb-4" style="max-width: 18rem">
+                    <div class="card-header bg-transparent border-success text-dark">
+                        <img src="@item.Logo" class="w-25 h-25"/>
+                        @item.Abbreviation
+                    </div>
+                    <div class="card-body text-success">
+                        <h5 class="card-title">@item.Name</h5>
+                        <h5 class="card-text">Price: $@item.Price</h5>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <a role="button" class="btn btn-outline-success" asp-action="Buy" asp-route-assetId="@item.AssetId">Buy</a>
+                        @if (User.IsInRole(Administrator))
+                        {
+                            <a role="button" class="btn btn-outline-info" asp-action="Edit" asp-route-assetId="@item.AssetId">Edit</a>
+                            <a role="button" class="btn btn-outline-danger" asp-action="Delete" asp-route-assetId="@item.AssetId">Delete</a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>

@@ -20,6 +20,10 @@ namespace Wallet.Infrastructure.Data
                 .HasOne(u => u.Wallet)
                 .WithOne(w => w.User)
                 .HasForeignKey<Models.Wallet>(w=>w.UserId);
+
+            builder.Entity<UserAsset>()
+                .Property(ua => ua.Quantity)
+                .HasPrecision(12, 5);
         }
 
         public DbSet<Asset> Assets { get; set; }

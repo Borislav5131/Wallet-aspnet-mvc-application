@@ -138,6 +138,7 @@ namespace Wallet.Core.Services
                         Name = c.Name,
                         Description = c.Description,
                     })
+                    .OrderBy(c=>c.Name)
                     .ToList();
 
                 var cacheOptions = new MemoryCacheEntryOptions()

@@ -31,6 +31,7 @@ namespace Wallet.Core.Services
                     Balance = u.Wallet.Balance.ToString("F2"),
                     PhoneNumber = u.PhoneNumber,
                 })
+                .OrderBy(u=>u.UserName)
                 .ToListAsync();
 
         public User? GetUserByName(string user)

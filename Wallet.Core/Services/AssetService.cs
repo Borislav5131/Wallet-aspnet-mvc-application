@@ -1,30 +1,24 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Wallet.Core.Constants;
+﻿using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels.Asset;
 using Wallet.Infrastructure.Data.Models;
-
-using static Wallet.Core.Constants.CacheConstants;
 
 namespace Wallet.Core.Services
 {
     public class AssetService : IAssetService
     {
         private readonly IRepository _repo;
-        private readonly IMemoryCache _cache;
         private readonly IUserService _userService;
         private readonly ICategoryService _categoryService;
         private readonly ITransactionService _transactionService;
 
         public AssetService(
             IRepository repo,
-            IMemoryCache cache,
             IUserService userService,
             ICategoryService categoryService,
             ITransactionService transactionService)
         {
             _repo = repo;
-            _cache = cache;
             _userService = userService;
             _categoryService = categoryService;
             _transactionService = transactionService;
@@ -41,6 +35,7 @@ namespace Wallet.Core.Services
                     Price = a.Value,
                     Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
                 })
+                .OrderBy(a=>a.Name)
                 .ToList();
 
         public Asset? GetAssetById(Guid assetId)
@@ -48,12 +43,7 @@ namespace Wallet.Core.Services
                 .FirstOrDefault(a => a.Id == assetId);
 
         public List<AllAssetViewModel> GetAssetsInCategory(Guid categoryId)
-        {
-            var allAssetsInCategory = _cache.Get<List<AllAssetViewModel>>(AllAssetsInCategoryCacheKey);
-
-            if (allAssetsInCategory == null)
-            {
-                allAssetsInCategory = _repo.All<Asset>()
+            => _repo.All<Asset>()
                     .Where(a => a.Category.Id == categoryId)
                     .Select(a => new AllAssetViewModel()
                     {
@@ -63,16 +53,8 @@ namespace Wallet.Core.Services
                         Price = a.Value,
                         Logo = "data:image;base64," + Convert.ToBase64String(a.Logo)
                     })
+                    .OrderBy(a=>a.Name)
                     .ToList();
-
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
-
-                _cache.Set(AllAssetsInCategoryCacheKey, allAssetsInCategory, cacheOptions);
-            }
-
-            return allAssetsInCategory;
-        }
 
         public (bool added, string error) Create(CreateAssetModel model, byte[] logo)
         {

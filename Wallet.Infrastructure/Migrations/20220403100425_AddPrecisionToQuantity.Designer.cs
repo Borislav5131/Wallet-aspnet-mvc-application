@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wallet.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Wallet.Infrastructure.Data;
 namespace Wallet.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletDbContext))]
-    partial class WalletDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220403100425_AddPrecisionToQuantity")]
+    partial class AddPrecisionToQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,8 +352,8 @@ namespace Wallet.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("Quantity")
-                        .HasPrecision(12, 5)
-                        .HasColumnType("decimal(12,5)");
+                        .HasPrecision(11, 6)
+                        .HasColumnType("decimal(11,6)");
 
                     b.Property<Guid?>("WalletId")
                         .HasColumnType("uniqueidentifier");
