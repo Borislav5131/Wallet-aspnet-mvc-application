@@ -17,7 +17,7 @@ namespace Wallet.Test.Services
         private ServiceProvider serviceProvider;
         private InMemoryDbContext dbContext;
         private IRepository repo;
-        private AssetService assetService;
+        private IAssetService assetService;
 
         [Fact]
         public void GetAllAssetsShouldReturnListOfAsset()
