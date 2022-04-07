@@ -140,6 +140,27 @@ namespace Wallet.Core.Services
             return (isDeposit, error);
         }
 
-        
+        public bool ClearTransactionsOfUser(User user)
+        {
+            user.Wallet.Transactions.Clear();
+
+            var transactions = _repo.All<Transaction>().Where(t => t.User == user).ToList();
+
+            try
+            {
+                foreach (var transaction in transactions)
+                {
+                    _repo.Remove<Transaction>(transaction);
+                }
+
+                _repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

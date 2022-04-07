@@ -241,6 +241,21 @@ namespace Wallet.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ClearTransactions(string username)
+        {
+            var user = _userService.GetUserByName(username);
+
+            if (user == null)
+            {
+                return View("Error", new ErrorViewModel() { ErrorMessage = "Invalid user!" });
+            }
+
+            bool isCleared = _transactionService.ClearTransactionsOfUser(user);
+
+            return Redirect($"/Admin/Admin/ManageUserTransactions?userId={user.Id}");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ManageCategories()
         {
             var categories = _categoryService.GetAllCategories();
