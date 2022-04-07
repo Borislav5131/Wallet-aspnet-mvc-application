@@ -37,7 +37,8 @@ namespace Wallet.Core.Services
                     Amount = a.Amount,
                     Quantity = a.Quantity,
                     Logo = a.Logo
-                });
+                })
+                .ToList();
 
         public (bool isSelled, string error) Sell(Guid userAssetId, string identityName)
         {
