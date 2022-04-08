@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Wallet - AdminPanel</title>
+    <title>Wallet - AdminPanel - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Wallet.styles.css" asp-append-version="true" />
     @await Html.PartialAsync("_Favicons")
@@ -48,7 +49,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted"></footer>
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; @DateTime.UtcNow.Year - Wallet
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

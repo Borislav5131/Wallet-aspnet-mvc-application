@@ -1,4 +1,5 @@
-﻿using Wallet.Core.ViewModels.User;
+﻿using Wallet.Core.ViewModels.Home;
+using Wallet.Core.ViewModels.User;
 using Wallet.Infrastructure.Data.Models;
 
 namespace Wallet.Core.Contracts
@@ -13,5 +14,6 @@ namespace Wallet.Core.Contracts
         decimal GetUserBalance(string? userName);
         bool Delete(string userId);
         Task<(bool isEdit, string error)> Edit(EditUserModel model, byte[]? convertedLogo);
+        AdminHomeViewModel GetInformationOfEntities();
     }
 }

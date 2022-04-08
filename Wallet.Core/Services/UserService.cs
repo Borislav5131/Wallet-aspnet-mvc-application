@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
+using Wallet.Core.ViewModels.Home;
 using Wallet.Core.ViewModels.User;
 using Wallet.Infrastructure.Data.Models;
 
@@ -11,13 +12,16 @@ namespace Wallet.Core.Services
     {
         private readonly IRepository _repo;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public UserService(
             IRepository repo,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _repo = repo;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IEnumerable<UserListViewModel>> GetUsers()
@@ -177,6 +181,23 @@ namespace Wallet.Core.Services
             }
 
             return (isEdit, error);
+        }
+
+        public AdminHomeViewModel GetInformationOfEntities()
+        {
+            var usersCount = _repo.All<User>().Count();
+            var categoriesCount = _repo.All<Category>().Count();
+            var assetsCount = _repo.All<Asset>().Count();
+            var rolesCount = _roleManager.Roles.Count();
+
+            var dic = new Dictionary<string, int>();
+
+            dic.Add("users",usersCount);
+            dic.Add("categories",categoriesCount);
+            dic.Add("assets",assetsCount);
+            dic.Add("roles",rolesCount);
+
+            return new AdminHomeViewModel() { CountOfEntities = dic };
         }
     }
 }

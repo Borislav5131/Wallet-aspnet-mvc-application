@@ -1,7 +1,74 @@
-﻿@{
+﻿@model Wallet.Core.ViewModels.Home.AdminHomeViewModel
+
+@{
     ViewData["Title"] = "Admin home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Admin Area</h1>
+    <h1 class="display-4">Welcome to Admin Panel</h1>
+    <h5>Only administrator have access to this panel!</h5>
+</div>
+
+<div class="text-center mt-5 mb-3">
+    <p style="font-size: 2rem">From here you can manage information about users, categories, assets and roles.</p>
+</div>
+
+<div>
+    
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-blue">
+                <div class="inner">
+                    <h3> Users </h3>
+                    <p> Count: @Model.CountOfEntities["users"] </p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                </div>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="ManageUsers" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-green">
+                <div class="inner">
+                    <h3> Categories </h3>
+                    <p> Count: @Model.CountOfEntities["categories"] </p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                </div>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="ManageCategories" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-orange">
+                <div class="inner">
+                    <h3> Assets </h3>
+                    <p> Count: @Model.CountOfEntities["assets"] </p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                </div>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="ManageAssets" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-red">
+                <div class="inner">
+                    <h3> Roles </h3>
+                    <p> Count: @Model.CountOfEntities["roles"] </p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-adn"></i>
+                </div>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="AllRoles" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </div>
