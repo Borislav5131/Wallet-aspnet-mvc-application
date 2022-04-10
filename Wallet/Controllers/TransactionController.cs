@@ -8,7 +8,6 @@ using Wallet.Core.ViewModels.Transaction;
 
 namespace Wallet.Controllers
 {
-
     [Authorize]
     public class TransactionController : Controller
     {
@@ -80,40 +79,6 @@ namespace Wallet.Controllers
             return Redirect("/");
         }
 
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
 
-        //[HttpPost]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

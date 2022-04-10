@@ -17,6 +17,21 @@ body {
   /*margin-bottom: 60px;*/
 }
 
+#bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#bg img {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    float: none;
+    height: 435px;
+    width: 100%
+}
+
 .my-custom-scrollbar {
     position: relative;
     height: 200px;
@@ -119,4 +134,11 @@ body {
 
 .bg-red {
     background-color: #d9534f !important;
+}
+
+/**/
+.homepage {
+    width: 100%;
+    height: 100%;
+    background: image();
 }

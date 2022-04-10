@@ -41,11 +41,13 @@ namespace Wallet.Core.Services
         public User? GetUserByName(string user)
             => _repo.All<User>()
                 .Include(u => u.Wallet)
+                .ThenInclude(w=>w.Transactions)
                 .FirstOrDefault(u => u.UserName == user);
 
         public User? GetUserById(string userId)
             => _repo.All<User>()
                 .Include(u=>u.Wallet)
+                .ThenInclude(w => w.Transactions)
                 .FirstOrDefault(u => u.Id == userId);
 
         public EditUserModel? GetDetailsOfUser(string userId)
@@ -92,6 +94,12 @@ namespace Wallet.Core.Services
 
             try
             {
+                foreach (var transaction in user.Wallet.Transactions)
+                {
+                    _repo.Remove<Transaction>(transaction);
+                }
+
+                _repo.Remove<Infrastructure.Data.Models.Wallet>(user.Wallet);
                 _repo.Remove<User>(user);
                 _repo.SaveChanges();
             }

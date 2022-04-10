@@ -1,15 +1,13 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Asset;
-
 using static Wallet.Core.Constants.UserConstants.Roles;
 
 namespace Wallet.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-
     [Authorize]
     public class AssetController : Controller
     {

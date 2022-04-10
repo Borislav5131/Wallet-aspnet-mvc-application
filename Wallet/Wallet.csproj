@@ -30,4 +30,10 @@
     <Folder Include="wwwroot\favicon\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\img\digital-web.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

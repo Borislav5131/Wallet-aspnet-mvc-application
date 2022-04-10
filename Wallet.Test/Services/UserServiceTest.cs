@@ -156,7 +156,8 @@ namespace Wallet.Test.Services
 
             repo = serviceProvider.GetService<IRepository>();
             var userManager = serviceProvider.GetService<UserManager<User>>();
-            userService = new UserService(repo, userManager);
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+            userService = new UserService(repo, userManager,roleManager);
         }
 
         private void Seed(IRepository repo)

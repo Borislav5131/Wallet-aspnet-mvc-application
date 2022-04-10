@@ -1,11 +1,10 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 
 namespace Wallet.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-
     public class UserAssetController : Controller
     {
         private readonly INotyfService _notyf;

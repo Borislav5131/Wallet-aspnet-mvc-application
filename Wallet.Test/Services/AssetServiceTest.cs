@@ -231,8 +231,9 @@ namespace Wallet.Test.Services
             repo = serviceProvider.GetService<IRepository>();
             var memoryCache = serviceProvider.GetService<IMemoryCache>();
             var userManager = serviceProvider.GetService<UserManager<User>>();
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
             var categoryService = new CategoryService(repo, memoryCache);
-            var userService = new UserService(repo, userManager);
+            var userService = new UserService(repo, userManager,roleManager);
             var transactionService = new TransactionService(repo, userService);
             assetService = new AssetService(repo, memoryCache, userService, categoryService, transactionService);
         }

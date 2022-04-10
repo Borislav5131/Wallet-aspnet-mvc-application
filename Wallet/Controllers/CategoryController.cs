@@ -55,8 +55,6 @@ namespace Wallet.Controllers
             return Redirect("/Category/All");
         }
 
-        //public IActionResult Details() => View();
-
         [HttpGet]
         [Authorize(Roles = Administrator)]
         public IActionResult Edit(Guid categoryId)

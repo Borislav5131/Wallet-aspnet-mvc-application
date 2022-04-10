@@ -38,6 +38,7 @@ namespace Wallet.Controllers
 
                 return View("Home",model);
             }
+
             _notyf.Success("Welcome");
             return View();
         }
