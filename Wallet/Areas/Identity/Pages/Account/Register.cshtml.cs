@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Wallet.Infrastructure.Data.Models;
+
+using static Wallet.Core.Constants.UserConstants.Roles;
 using static Wallet.Infrastructure.Data.DataConstants.User;
 
 namespace Wallet.Areas.Identity.Pages.Account
@@ -12,15 +14,18 @@ namespace Wallet.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly INotyfService _notyf;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
+            RoleManager<IdentityRole> roleManager,
             INotyfService notyf)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _notyf = notyf;
         }
 
@@ -76,6 +81,12 @@ namespace Wallet.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    if (!await _roleManager.RoleExistsAsync(UserRole))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRole));
+                    }
+
+                    await _userManager.AddToRoleAsync(user, UserRole);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _notyf.Success("Successfully register!");
                     return LocalRedirect(returnUrl);

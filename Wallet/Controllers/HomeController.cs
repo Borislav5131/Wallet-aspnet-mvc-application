@@ -1,8 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Home;
+
+using static Wallet.Core.Constants.UserConstants.Roles;
 
 namespace Wallet.Controllers
 {
@@ -43,6 +46,7 @@ namespace Wallet.Controllers
             return View();
         }
 
+        [Authorize(Roles = Administrator)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { ErrorMessage = "Something wrong!"});

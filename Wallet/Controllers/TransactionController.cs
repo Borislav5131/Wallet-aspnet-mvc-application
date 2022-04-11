@@ -5,6 +5,7 @@ using Wallet.Core.Contracts;
 using Wallet.Core.ViewModels;
 using Wallet.Core.ViewModels.Transaction;
 
+using static Wallet.Core.Constants.UserConstants.Roles;
 
 namespace Wallet.Controllers
 {
