@@ -1,4 +1,5 @@
 ﻿using Wallet.Infrastructure.Data.Models;
+using Wallet.Infrastructure.InitialSeed;
 
 namespace Wallet.Infrastructure.Data
 {
@@ -24,6 +25,8 @@ namespace Wallet.Infrastructure.Data
             builder.Entity<UserAsset>()
                 .Property(ua => ua.Quantity)
                 .HasPrecision(12, 5);
+
+            builder.ApplyConfiguration(new InitialDataConfiguration<Category>(@"../Wallet.Infrastructure/InitialSeed/categories.json"));
         }
 
         public DbSet<Asset> Assets { get; set; }

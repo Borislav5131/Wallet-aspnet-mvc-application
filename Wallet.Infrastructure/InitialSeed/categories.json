@@ -1,0 +1,17 @@
+﻿[
+  {
+    "Id": "F1BE908E-0091-42BF-8312-1548C71A1548",
+    "Name": "Currency",
+    "Description": "Currency is a medium of exchange for goods and services."
+  },
+  {
+    "Id": "17CB034E-EBBD-4F36-9E35-4FC2F134FF45",
+    "Name": "Stock",
+    "Description": "A stock is a security that represents the ownership of a fraction of a corporation."
+  },
+  {
+    "Id": "CFEB0745-C0A8-4E84-B8BD-B32B4DFC9374",
+    "Name": "Crypto",
+    "Description": "Crypto currency, sometimes called crypto-currency or crypto, is any form of currency that exists digitally or virtually and uses cryptography to secure transactions."
+  }
+]
