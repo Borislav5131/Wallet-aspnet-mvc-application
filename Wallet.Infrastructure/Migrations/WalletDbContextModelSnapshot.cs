@@ -212,26 +212,6 @@ namespace Wallet.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f1be908e-0091-42bf-8312-1548c71a1548"),
-                            Description = "Currency is a medium of exchange for goods and services.",
-                            Name = "Currency"
-                        },
-                        new
-                        {
-                            Id = new Guid("17cb034e-ebbd-4f36-9e35-4fc2f134ff45"),
-                            Description = "A stock is a security that represents the ownership of a fraction of a corporation.",
-                            Name = "Stock"
-                        },
-                        new
-                        {
-                            Id = new Guid("cfeb0745-c0a8-4e84-b8bd-b32b4dfc9374"),
-                            Description = "Crypto currency, sometimes called crypto-currency or crypto, is any form of currency that exists digitally or virtually and uses cryptography to secure transactions.",
-                            Name = "Crypto"
-                        });
                 });
 
             modelBuilder.Entity("Wallet.Infrastructure.Data.Models.Transaction", b =>

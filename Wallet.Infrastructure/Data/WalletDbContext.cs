@@ -1,4 +1,5 @@
-﻿using Wallet.Infrastructure.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Wallet.Infrastructure.Data.Models;
 using Wallet.Infrastructure.InitialSeed;
 
 namespace Wallet.Infrastructure.Data
@@ -26,7 +27,12 @@ namespace Wallet.Infrastructure.Data
                 .Property(ua => ua.Quantity)
                 .HasPrecision(12, 5);
 
-            builder.ApplyConfiguration(new InitialDataConfiguration<Category>(@"../Wallet.Infrastructure/InitialSeed/categories.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<Category>(@"../../../Wallet.Infrastructure/InitialSeed/categories.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<Asset>(@"../../../Wallet.Infrastructure/InitialSeed/assets.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<IdentityRole>(@"../../../Wallet.Infrastructure/InitialSeed/roles.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<User>(@"../../../Wallet.Infrastructure/InitialSeed/users.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<IdentityUserRole<string>>(@"../../../Wallet.Infrastructure/InitialSeed/usersRoles.json"));
+            builder.ApplyConfiguration(new InitialDataConfiguration<Models.Wallet>(@"../../../Wallet.Infrastructure/InitialSeed/wallets.json"));
         }
 
         public DbSet<Asset> Assets { get; set; }
