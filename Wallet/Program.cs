@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Wallet.Core.Constants;
 using Wallet.Core.Contracts;
 using Wallet.Core.Services;
+using Wallet.Extensions;
 using Wallet.Infrastructure.Data;
 using Wallet.Infrastructure.Data.Models;
 using Wallet.ModelBinders;
@@ -53,6 +54,7 @@ builder.Services.AddTransient<IUserAssetService, UserAssetService>();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 var app = builder.Build();
+app.PrepareDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
