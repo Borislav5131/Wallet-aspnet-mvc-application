@@ -45,7 +45,7 @@ namespace Wallet.Extensions
                     {
                         Email = adminEmail,
                         UserName = adminUserName,
-                        Image = new byte[]{}
+                        Image = ConvertImageToBytes()
                     };
 
                     await userManager.CreateAsync(user, adminPassword);
@@ -54,6 +54,16 @@ namespace Wallet.Extensions
                 })
                 .GetAwaiter()
                 .GetResult();
+        }
+
+        private static byte[] ConvertImageToBytes()
+        {
+            if (!File.Exists(@"wwwroot/img/admin-avatar.png"))
+            {
+                return new byte[]{};
+            }
+
+            return File.ReadAllBytes(@"wwwroot/img/admin-avatar.png");
         }
     }
 }
