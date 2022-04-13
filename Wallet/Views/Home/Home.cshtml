@@ -1,5 +1,4 @@
-﻿@using Microsoft.CodeAnalysis.VisualBasic.Syntax
-@model Wallet.Core.ViewModels.Home.HomeViewModel
+﻿@model Wallet.Core.ViewModels.Home.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +6,7 @@
 
 <!-- User information -->
 <div class="card">
-    <img src="@Model.UserViewModel.Image" style="width:100%">
+    <img src="@Model.UserViewModel.Image" alt="~/img/admin-avatar.png" style="width:100%">
     <h1>@Model.UserViewModel.Username</h1>
     <p class="title">@Model.UserViewModel.Email</p>
     <p class="text-dark" style="font-size: 2rem">Balance: $@Model.UserViewModel.Balance</p>

@@ -45,6 +45,7 @@ namespace Wallet.Extensions
                     {
                         Email = adminEmail,
                         UserName = adminUserName,
+                        Image = new byte[]{}
                     };
 
                     await userManager.CreateAsync(user, adminPassword);
