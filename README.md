@@ -1,7 +1,7 @@
 # Wallet-aspnet-mvc-application
 This is my small ASP.NET project. It is virtual wallet in which you can buy, store and sell your assets.
 
-This project is my exam for the ASP.Net Core course at SoftUni. The whole idea comes from my interest in cryptocurrencies and stocks recently. 
+This project is my Project Defence for the ASP.Net Core course at SoftUni. The whole idea comes from my interest in cryptocurrencies and stocks recently. 
 
 At the moment the project is working well, the design is at a medium level. Every section of the site works and there should be no bugs, if you find bugs contact me. I plan to develop the project in the future, because I liked the idea.
 
