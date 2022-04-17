@@ -14,9 +14,6 @@
             </li>
         }
         <li class="nav-item pe-1">
-            <a class="nav-link text-dark btn" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-        </li>
-        <li class="nav-item pe-1">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn text-dark">Logout</button>
             </form>
